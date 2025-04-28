@@ -12,8 +12,10 @@
 @else
 	@if(Auth::user()->user_type == 'vendor')
         @include('profile')
-   @elseif(Auth::user()->user_type == 'customer')
+     @elseif(Auth::user()->user_type == 'customer')
         @include('profile')
+     @elseif(Auth::user()->user_type == 'freelancer')
+        @include('freelancer-profile')
    @else
         @include('not-found')
    @endif

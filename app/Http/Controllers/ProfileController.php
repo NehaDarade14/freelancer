@@ -4268,6 +4268,211 @@ class ProfileController extends Controller
 	}
 	
 	
+
+
+	public function update_freelancer_profile(Request $request)
+	{
+    // Get the settings for image size
+    $additional = Settings::editAdditional();
+	$allsettings = Settings::allSettings();
+	$image_size = $allsettings->site_max_image_size;
+
+    // Validate the incoming request
+    $request->validate([
+        'name' => 'required',
+        'username' => 'required',
+        'email' => 'required|email',
+        'user_photo' => 'mimes:jpeg,jpg,png,gif|max:' . $image_size,
+        'user_banner' => 'mimes:jpeg,jpg,png,gif|max:' . $image_size,
+        'user_payment_option' => 'array',
+    ]);
+
+    // Prepare the data from the request
+    $data = [
+        'name' => $request->input('name'),
+        'username' => $request->input('username'),
+        'email' => $request->input('email'),
+        'country' => $request->input('country'),
+        'profile_heading' => $request->input('profile_heading'),
+        'about' => $request->input('about'),
+        'facebook_url' => $request->input('facebook_url') ?? '',
+        'twitter_url' => $request->input('twitter_url') ?? '',
+        'github_url' => $request->input('github_url') ?? '',
+        'instagram_url' => $request->input('instagram_url') ?? '',
+        'linkedin_url' => $request->input('linkedin_url') ?? '',
+        'pinterest_url' => $request->input('pinterest_url') ?? '',
+		'other' => $request->input('other'),
+        'user_freelance' => $request->input('user_freelance') ?? 0,
+        'country_badge' => $request->input('country_badge'),
+        'exclusive_author' => $request->input('exclusive_author'),
+        'user_message_permission' => $request->input('user_message_permission') ?? 0,
+		'skills' => $request->input('skills'),
+		'experience' => $request->input('experience'),
+		'professional_bio' => $request->input('professional_bio'),
+    ];
+
+    // Handle the user photo upload
+    if ($request->hasFile('user_photo')) {
+        // Delete the old photo if exists
+        Members::droPhoto($request->input('user_token'));
+
+        $image = $request->file('user_photo');
+        $img_name = time() . '.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/storage/users');
+        $imagePath = $destinationPath . "/" . $img_name;
+        $image->move($destinationPath, $img_name);
+
+        // Process image quality
+        $img = Image::make(public_path('/storage/users/' . $img_name));
+        $img->save(base_path('public/storage/users/' . $img_name), $additional->image_quality);
+
+        $data['user_photo'] = $img_name;
+    } else {
+        $data['user_photo'] = $request->input('save_photo');
+    }
+
+    // Handle the user banner upload
+    if ($request->hasFile('user_banner')) {
+        // Delete the old banner if exists
+        Members::droBanner($request->input('user_token'));
+
+        $image = $request->file('user_banner');
+        $img_name = time() . '456.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/storage/users');
+        $imagePath = $destinationPath . "/" . $img_name;
+        $image->move($destinationPath, $img_name);
+
+        // Process image quality
+        $img = Image::make(public_path('/storage/users/' . $img_name));
+        $img->save(base_path('public/storage/users/' . $img_name), $additional->image_quality);
+
+        $data['user_banner'] = $img_name;
+    } else {
+        $data['user_banner'] = $request->input('save_banner');
+    }
+
+	// Handle the government_id upload
+	if ($request->hasFile('government_id')) {
+        // Delete the old photo if exists
+        Members::droPhotoId($request->input('user_token'));
+
+        $image = $request->file('government_id');
+        $img_name = time() . '_id.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/storage/users');
+        $imagePath = $destinationPath . "/" . $img_name;
+        $image->move($destinationPath, $img_name);
+
+        // Process image quality
+        $img = Image::make(public_path('/storage/users/' . $img_name));
+        $img->save(base_path('public/storage/users/' . $img_name), $additional->image_quality);
+
+        $data['government_id'] = $img_name;
+    } else {
+        $data['government_id'] = $request->input('save_government_id');
+    }
+
+	// Handle the address_proof upload
+	if ($request->hasFile('address_proof')) {
+        // Delete the old photo if exists
+        Members::droPhotoAddProof($request->input('user_token'));
+
+        $image = $request->file('address_proof');
+        $img_name = time() . '_add_proof.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/storage/users');
+        $imagePath = $destinationPath . "/" . $img_name;
+        $image->move($destinationPath, $img_name);
+
+        // Process image quality
+        $img = Image::make(public_path('/storage/users/' . $img_name));
+        $img->save(base_path('public/storage/users/' . $img_name), $additional->image_quality);
+
+        $data['address_proof'] = $img_name;
+    } else {
+        $data['address_proof'] = $request->input('save_address_proof');
+    }
+
+	// Handle the biometric_photo upload
+	if ($request->hasFile('biometric_photo')) {
+        // Delete thbioe old photo if exists
+        Members::droBioPhoto($request->input('user_token'));
+
+        $image = $request->file('biometric_photo');
+        $img_name = time() . '_bio.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/storage/users');
+        $imagePath = $destinationPath . "/" . $img_name;
+        $image->move($destinationPath, $img_name);
+
+        // Process image quality
+        $img = Image::make(public_path('/storage/users/' . $img_name));
+        $img->save(base_path('public/storage/users/' . $img_name), $additional->image_quality);
+
+        $data['biometric_photo'] = $img_name;
+    } else {
+        $data['biometric_photo'] = $request->input('save_biometric_photo');
+    }
+
+
+	// Handle the signature_data upload
+	if ($request->hasFile('signature_data')) {
+        // Delete the old photo if exists
+        Members::droSignPhoto($request->input('user_token'));
+
+        $image = $request->file('signature_data');
+        $img_name = time() . '_sign.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/storage/users');
+        $imagePath = $destinationPath . "/" . $img_name;
+        $image->move($destinationPath, $img_name);
+
+        // Process image quality
+        $img = Image::make(public_path('/storage/users/' . $img_name));
+        $img->save(base_path('public/storage/users/' . $img_name), $additional->image_quality);
+
+        $data['signature_data'] = $img_name;
+    } else {
+        $data['signature_data'] = $request->input('save_signature_data');
+    }
+
+
+	
+
+    // Handle payment options if provided
+    if ($request->has('user_payment_option')) {
+        $payment = implode(',', $request->input('user_payment_option'));
+        $data['user_payment_option'] = rtrim($payment, ',');
+    } else {
+        $data['user_payment_option'] = "";
+    }
+
+    // Handle other payment-related fields
+    $data['user_paypal_email'] = $request->input('user_paypal_email');
+    $data['user_paypal_mode'] = $request->input('user_paypal_mode');
+
+	if(!empty($request->input('password')))
+	{
+		$data['password'] = bcrypt($request->input('password'));
+		$pass = $data['password'];
+		$data['user_paypal_mode'] = base64_encode($request->input('password'));
+		
+	}
+	else
+	{
+		$data['password']  = $request->input('save_password');
+		$data['user_paypal_mode'] = $request->input('save_auth_token');
+	}
+
+	$token = $request->input('user_token');
+    // Insert or update the freelancer profile
+	$user = Members::updateData($token, $data);
+    
+    // Return a response based on success or failure
+    if ($user) {
+        return redirect()->route('freelancer.profile')->with('success', 'Profile updated successfully');
+    } else {
+        return back()->with('error', 'There was an error updating your profile');
+    }
+
+
+	}
 	
 	
 }

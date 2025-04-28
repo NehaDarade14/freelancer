@@ -469,8 +469,10 @@ Route::get('searchajax',array('as'=>'searchajax','uses'=>'CommonController@autoC
 
 Route::get('/profile-settings', 'ProfileController@view_profile_settings');
 Route::post('/profile-settings', ['as' => 'profile-settings','uses'=>'ProfileController@update_profile']);
-
+// Route::post('/profile/update', ['as' => 'profile.update','uses'=>'ProfileController@update_profile'])->middleware('auth');
 /* profile settings */
+Route::post('/freelancer-profile-settings', 'ProfileController@update_freelancer_profile')->name('freelancer-profile-settings');
+
 
 
 /* sitemap */
