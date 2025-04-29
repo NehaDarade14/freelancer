@@ -783,4 +783,14 @@ class Members extends Model
       $filename = public_path().'/storage/users/'.$file;
       File::delete($filename);
   }
+
+  public static function getKycUsers() {
+    return DB::table('users')
+        ->join('user_types', 'users.id', '=', 'user_types.user_id')
+        // ->where('users.kyc_status', 'pending')
+        ->where('user_types.type', 'freelancer')
+        ->select('users.*') // you can select other fields as needed
+        ->get();
+}
+
 }

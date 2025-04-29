@@ -44,6 +44,13 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 	Route::post('/admin/vendor', ['as' => 'admin.vendor','uses'=>'Admin\MembersController@search_vendors']);
 	/* vendor */
 	
+	/* KYC Verification */
+	Route::get('/admin/kyc-submissions', 'Admin\AdminKycController@index')->name('admin.kyc.index');
+	Route::get('/admin/kyc-submissions/{id}', 'Admin\AdminKycController@show')->name('admin.kyc.show');
+	Route::post('/admin/kyc-submissions/{user}/approve', 'Admin\AdminKycController@approve')->name('admin.kyc.approve');
+	Route::post('/admin/kyc-submissions/{user}/reject', 'Admin\AdminKycController@reject')->name('admin.kyc.reject');
+	/* KYC Verification */
+	
 	/* media settings */
 	
 	Route::get('/admin/media-settings', 'Admin\SettingsController@media_settings');

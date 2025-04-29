@@ -196,6 +196,11 @@
                         <a href="{{ url('/admin/backup') }}"> <i class="menu-icon fa fa-hdd-o"></i>{{ __('Backups') }} </a>
                     </li>
                     @endif
+                    @if(in_array('kyc-submissions',$avilable))
+                    <li>
+                        <a href="{{ url('/admin/kyc-submissions') }}"> <i class="menu-icon fa fa-hdd-o"></i>{{ __('KYC Submissions') }} </a>
+                    </li>
+                    @endif
                 </ul>
             </div><!-- /.navbar-collapse -->
             @endif

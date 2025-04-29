@@ -9,6 +9,11 @@ class Users extends Model
 {
 
 
+	protected $table = 'users';
+
+  protected $fillable = [
+    'kyc_status', 
+];
 
      public static function getvendorData()
   {
