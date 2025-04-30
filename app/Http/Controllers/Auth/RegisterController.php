@@ -223,8 +223,8 @@ class RegisterController extends Controller
 			if($userfind)
 			{
 				foreach ($encrypted_user_types as $user_type) {
-					$data = array('user_id' => $userfind->id, 'type' => $user_type);
-					Members::insertUserTypeData($data);
+					$newdata = array('user_id' => $userfind->id, 'type' => $user_type);
+					Members::insertUserTypeData($newdata);
 				}
 				
 			}

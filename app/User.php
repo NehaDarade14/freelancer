@@ -20,9 +20,14 @@ class User extends Authenticatable
     const DEFAULT_TYPE = 'vendor';
 	
 	
-	public function isAdmin()    {        
-		return $this->user_type === self::ADMIN_TYPE;    
-	} 
+	public function isAdmin()    {
+		return $this->user_type === self::ADMIN_TYPE;
+	}
+	
+	public function bids()
+	{
+		return $this->hasMany(\App\Models\Bid::class);
+	}
 	 
 	 
 	 

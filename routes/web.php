@@ -35,6 +35,11 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 	
 	/* vendor */
 	Route::get('/admin/vendor', 'Admin\MembersController@vendor');
+
+	/* Bid Pack Management */
+	Route::resource('bid-packs', 'Admin\BidPackController')->except(['show']);
+	Route::post('bid-packs/{bidPack}/toggle-status', 'Admin\BidPackController@toggleStatus')
+	     ->name('bid-packs.toggle-status');
 	Route::get('/admin/add-vendor', 'Admin\MembersController@add_vendor')->name('admin.add-vendor');
 	Route::post('/admin/add-vendor', 'Admin\MembersController@save_customer');
 	Route::get('/admin/vendor/{token}', 'Admin\MembersController@delete_customer');
@@ -51,6 +56,15 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 	Route::post('/admin/kyc-submissions/{user}/reject', 'Admin\AdminKycController@reject')->name('admin.kyc.reject');
 	/* KYC Verification */
 	
+	/**Bid Pack */
+	Route::get('/admin/bid-packs', 'Admin\BidPackController@index')->name('admin.bid-packs.index');
+	Route::get('/admin/bid-packs/create', 'Admin\BidPackController@create')->name('admin.bid-packs.create');
+	Route::post('/admin/bid-packs/store', 'Admin\BidPackController@store')->name('admin.bid-packs.store');
+    Route::get('/admin/bid-packs/{bidPack}/edit', 'Admin\BidPackController@edit')->name('admin.bid-packs.edit');
+    Route::put('/admin/bid-packs/{bidPack}', 'Admin\BidPackController@update')->name('admin.bid-packs.update');
+	Route::delete('/admin/bid-packs/{bidPack}', 'Admin\BidPackController@destroy')->name('admin.bid-packs.destroy');
+	/**Bid Pack */
+
 	/* media settings */
 	
 	Route::get('/admin/media-settings', 'Admin\SettingsController@media_settings');
