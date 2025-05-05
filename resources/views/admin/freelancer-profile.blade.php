@@ -26,7 +26,7 @@
                             <div class="col-sm-4">
                                 <div class="page-header float-left">
                                     <div class="page-title">
-                                        <h1>{{ __('Create Bid Pack') }}</h1>
+                                        <h1>{{ __('Freelancer profile') }}</h1>
                                     </div>
                                 </div>
                             </div>

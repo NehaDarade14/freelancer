@@ -28,7 +28,7 @@
                             <div class="col-sm-4">
                                 <div class="page-header float-left">
                                     <div class="page-title">
-                                        <h1>{{ __('Create Bid Pack') }}</h1>
+                                        <h1>{{ __('Freelancer List') }}</h1>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +54,6 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>KYC Status</th>
-                                            <th>Items</th>
                                             <th>Joined</th>
                                             <th>Actions</th>
                                         </tr>
@@ -66,23 +65,18 @@
                                             <td>{{ $freelancer->name }}</td>
                                             <td>{{ $freelancer->email }}</td>
                                             <td>
-                                                <span class="badge badge-{{ $freelancer->user_document_verified == 'verified' ? 'success' : ($freelancer->user_document_verified == 'rejected' ? 'danger' : 'warning') }}">
-                                                    {{ ucfirst($freelancer->user_document_verified) }}
+                                                <span class="badge badge-{{ $freelancer->kyc_status == 'approved' ? 'success' : ($edit['userdata']->kyc_status == 'rejected' ? 'danger' : 'warning')}}">
+                                                    {{ ucfirst($freelancer->kyc_status) }}
                                                 </span>
                                             </td>
-                                            <td>{{ $freelancer->items_count }}</td>
+                                            
                                             <td> {{ \Carbon\Carbon::parse($freelancer->created_at)->format('M d, Y H:i') }}
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.freelancer.profile', $freelancer->user_id) }}" class="btn btn-sm btn-primary">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                @if($freelancer->account_status != 'suspended')
-                                                    <button class="btn btn-sm btn-warning suspend-btn" data-id="{{ $freelancer->id }}">
-                                                        <i class="fa fa-ban"></i>
-                                                    </button>
-                                                @endif
-                                                <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $freelancer->id }}">
+                                                <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $freelancer->user_id }}">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </td>

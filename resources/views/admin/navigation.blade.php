@@ -51,6 +51,8 @@
                             <li><i class="fa fa-user"></i><a href="{{ url('/admin/administrator') }}">{{ __('Sub Administrators') }}</a></li>
                             <li><i class="fa fa-user"></i><a href="{{ url('/admin/customer') }}">{{ __('Customers') }}</a></li>
                             <li><i class="fa fa-user"></i><a href="{{ url('/admin/vendor') }}">{{ __('Vendors') }}</a></li>
+                            <li><i class="fa fa-user"></i><a href="{{ url('/admin/freelancers') }}">{{ __('Freelancers') }}</a></li>
+                            
                          </ul>
                     </li>
                     @endif                   
