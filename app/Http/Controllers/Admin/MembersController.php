@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Fickrr\Http\Controllers\Controller;
 use Session;
 use Fickrr\Models\Members;
+use Fickrr\Models\Users;
 use Fickrr\Models\Settings;
 use Fickrr\Models\Items;
 use Illuminate\Validation\Rule;
@@ -681,8 +682,8 @@ class MembersController extends Controller
 	/* vendor */
 	
 	public function vendor()
-    {
-        
+	   {
+	       
 		$itemData['item'] = Members::getvendorData();
 		$search = "";
 		if($this->custom() != 0)
@@ -693,7 +694,66 @@ class MembersController extends Controller
 	   	{
 		  return redirect('/admin/license');
 	   	}
-    }
+	   }
+	   
+	   public function freelancers()
+	   {
+			$itemData['item'] = Users::join('user_types', 'users.id', '=', 'user_types.user_id')
+			->where('drop_status', 'no')
+			->where('user_types.type', 'freelancer')->get();
+	           
+	       $search = "";
+	       if($this->custom() != 0) {
+	           return view('admin.freelancers', [
+	               'itemData' => $itemData,
+	               'search' => $search,
+	               'kycStatuses' => ['pending', 'verified', 'rejected']
+	           ]);
+	       }
+	       return redirect('/admin/license');
+	   }
+	   
+	   	public function freelancerProfile($id)
+	    {
+	       	$edit['userdata'] = Users::findOrFail($id);
+
+	       	if($this->custom() != 0) {
+	           	return view('admin.freelancer-profile', [
+	               'edit' => $edit,
+	               'kycDocuments' => $edit['userdata']
+	           	]);
+	       	}
+
+	       	return redirect('/admin/license');
+	   	}
+	   
+	   public function approveFreelancer($id)
+	   {
+	       $data = [
+	           'user_document_verified' => 'verified',
+	           'account_status' => 'approve',
+	           'updated_at' => now()
+	       ];
+	       Users::where('id', $id)->update($data);
+	       return redirect()->back()->with('success', 'Freelancer approved');
+	   }
+	   
+	   public function suspendFreelancer($id)
+	   {
+	       $data = [
+	           'account_status' => 'suspended',
+	           'updated_at' => now()
+	       ];
+	       Users::where('id', $id)->update($data);
+	       return redirect()->back()->with('warning', 'Freelancer suspended');
+	   }
+	   
+	   public function removeFreelancer($id)
+	   {
+	       $data = ['drop_status' => 'yes'];
+	       Users::where('id', $id)->update($data);
+	       return redirect('/admin/freelancers')->with('danger', 'Freelancer removed');
+	   }
 	
 	public function add_vendor()
 	{

@@ -279,7 +279,7 @@
                             </label>
                             @php
                                 if(Auth::user()->government_id == '') 
-                                    $govbvalidate = 'data-bvalidator="required"'; 
+                                    $govbvalidate = 'data-bvalidator=required'; 
                                 else 
                                     $govbvalidate = 'data-bvalidator=""'; 
                             @endphp
@@ -299,7 +299,7 @@
                             </label>
                             @php
                                 if(Auth::user()->government_id == '') 
-                                    $addpbvalidate = 'data-bvalidator="required"'; 
+                                    $addpbvalidate = 'data-bvalidator=required'; 
                                 else 
                                     $addpbvalidate = 'data-bvalidator=""'; 
                             @endphp
@@ -320,8 +320,8 @@
                                 <span class="text-danger">*</span>
                             </label>
                             @php
-                                if(Auth::user()->government_id == '') 
-                                    $biopbvalidate = 'data-bvalidator="required"'; 
+                                if(Auth::user()->biometric_photo == '') 
+                                    $biopbvalidate = 'data-bvalidator=required'; 
                                 else 
                                     $biopbvalidate = 'data-bvalidator=""'; 
                             @endphp
@@ -339,8 +339,8 @@
                                 <span class="text-danger">*</span>
                             </label>
                             @php
-                                if(Auth::user()->government_id == '') 
-                                    $signbvalidate = 'data-bvalidator="required"'; 
+                                if(Auth::user()->signature_data == '') 
+                                    $signbvalidate = 'data-bvalidator=required'; 
                                 else 
                                     $signbvalidate = 'data-bvalidator=""'; 
                             @endphp

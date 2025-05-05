@@ -35,6 +35,21 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 	
 	/* vendor */
 	Route::get('/admin/vendor', 'Admin\MembersController@vendor');
+	
+	/* Freelancer Management */
+	Route::get('/admin/freelancers', 'Admin\MembersController@freelancers')->name('admin.freelancers');
+	Route::get('/admin/freelancers/{id}', 'Admin\MembersController@freelancerProfile')->name('admin.freelancer.profile');
+	Route::post('/admin/freelancers/{id}/approve', 'Admin\MembersController@approveFreelancer')->name('admin.freelancer.approve');
+	Route::post('/admin/freelancers/{id}/suspend', 'Admin\MembersController@suspendFreelancer')->name('admin.freelancer.suspend');
+	Route::post('/admin/freelancers/{id}/remove', 'Admin\MembersController@removeFreelancer')->name('admin.freelancer.remove');
+	
+	// /* Freelancer Management */
+	// Route::get('/admin/freelancers', 'Admin\MembersController@freelancers')->name('admin.freelancers');
+	// Route::get('/admin/freelancers/{id}', 'Admin\MembersController@freelancerProfile')->name('admin.freelancer.profile');
+	// Route::post('/admin/freelancers/{id}/approve', 'Admin\MembersController@approveFreelancer')->name('admin.freelancer.approve');
+	// Route::post('/admin/freelancers/{id}/suspend', 'Admin\MembersController@suspendFreelancer')->name('admin.freelancer.suspend');
+	// Route::post('/admin/freelancers/{id}/remove', 'Admin\MembersController@removeFreelancer')->name('admin.freelancer.remove');
+	// /* Freelancer Management */
 
 	/* Bid Pack Management */
 	Route::resource('bid-packs', 'Admin\BidPackController')->except(['show']);
