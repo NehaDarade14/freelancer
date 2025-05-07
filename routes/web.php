@@ -926,3 +926,43 @@ Route::get('/offline', function () {
 
 
 });
+
+/* Job Management */
+Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], function () {
+    Route::get('/admin/jobs', 'Admin\JobController@index')->name('admin.jobs.index');
+    Route::get('/admin/jobs/create', 'Admin\JobController@create')->name('admin.jobs.create');
+    Route::post('/admin/jobs', 'Admin\JobController@store')->name('admin.jobs.store');
+    Route::get('/admin/jobs/{job}', 'Admin\JobController@show')->name('admin.jobs.show');
+    Route::get('/admin/jobs/{job}/edit', 'Admin\JobController@edit')->name('admin.jobs.edit');
+    Route::put('/admin/jobs/{job}', 'Admin\JobController@update')->name('admin.jobs.update');
+    Route::delete('/admin/jobs/{job}', 'Admin\JobController@destroy')->name('admin.jobs.destroy');
+    
+    /* Job Applications */
+    Route::get('/admin/jobs/{job}/applications', 'Admin\JobController@applications')->name('admin.jobs.applications');
+    Route::get('/admin/jobs/{job}/applications/{application}', 'Admin\JobController@viewApplication')->name('admin.jobs.applications.view');
+    Route::post('/admin/jobs/{job}/applications/{application}/status', 'Admin\JobController@updateApplicationStatus')->name('admin.jobs.applications.status');
+});
+
+/* User-facing Job Routes */
+Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
+    Route::get('/jobs', 'JobController@index')->name('jobs.index');
+    Route::get('/jobs/{job}', 'JobController@show')->name('jobs.show');
+    Route::get('/jobs/{job}/apply', 'JobController@apply')->name('jobs.apply')->middleware('auth');
+    Route::post('/jobs/{job}/apply', 'JobController@submitApplication')->name('jobs.apply.submit')->middleware('auth');
+    
+    /* Freelancer Job Applications */
+    Route::get('/freelancer/jobs', 'JobController@freelancerJobs')->name('freelancer.jobs')->middleware('auth');
+    Route::get('/freelancer/jobs/applications', 'JobController@myApplications')->name('freelancer.jobs.applications')->middleware('auth');
+    Route::get('/freelancer/jobs/applications/{application}', 'JobController@viewApplication')->name('freelancer.jobs.applications.view')->middleware('auth');
+    
+    /* Employer Job Management */
+    Route::group(['middleware' => ['auth', 'is_employer']], function() {
+        Route::get('/employer/jobs', 'JobController@employerJobs')->name('employer.jobs');
+        Route::get('/employer/jobs/create', 'JobController@create')->name('employer.jobs.create');
+        Route::post('/employer/jobs', 'JobController@store')->name('employer.jobs.store');
+        Route::get('/employer/jobs/{job}/edit', 'JobController@edit')->name('employer.jobs.edit');
+        Route::put('/employer/jobs/{job}', 'JobController@update')->name('employer.jobs.update');
+        Route::delete('/employer/jobs/{job}', 'JobController@destroy')->name('employer.jobs.destroy');
+        Route::get('/employer/jobs/{job}/applications', 'JobController@jobApplications')->name('employer.jobs.applications');
+    });
+});
