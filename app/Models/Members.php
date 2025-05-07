@@ -754,34 +754,50 @@ class Members extends Model
   public static function droPhotoId($token)
   {
       $image = DB::table('users')->where('user_token', $token)->first();
-      $file= $image->government_id;
-      $filename = public_path().'/storage/users/'.$file;
-      File::delete($filename);
+      if($image->government_id)
+      {
+        $file= $image->government_id;
+        $filename = public_path().'/storage/users/'.$file;
+        File::delete($filename);
+      }
+     
   }
 
   public static function droPhotoAddProof($token)
   {
       $image = DB::table('users')->where('user_token', $token)->first();
-      $file= $image->address_proof;
-      $filename = public_path().'/storage/users/'.$file;
-      File::delete($filename);
+      if($image->address_proof)
+      {
+        $file= $image->address_proof;
+        $filename = public_path().'/storage/users/'.$file;
+        File::delete($filename);
+      }
+       
   }
 
   public static function droBioPhoto($token)
   {
       $image = DB::table('users')->where('user_token', $token)->first();
-      $file= $image->biometric_photo;
-      $filename = public_path().'/storage/users/'.$file;
-      File::delete($filename);
+      if($image->biometric_photo)
+      {
+        $file= $image->biometric_photo;
+        $filename = public_path().'/storage/users/'.$file;
+        File::delete($filename);
+      }
+     
   }
 
 
   public static function droSignPhoto($token)
   {
       $image = DB::table('users')->where('user_token', $token)->first();
-      $file= $image->signature_data;
-      $filename = public_path().'/storage/users/'.$file;
-      File::delete($filename);
+      if($image->signature_data)
+      {
+        $file= $image->signature_data;
+        $filename = public_path().'/storage/users/'.$file;
+        File::delete($filename);
+      }
+      
   }
 
   public static function getKycUsers() {
