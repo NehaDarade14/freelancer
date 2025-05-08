@@ -30,7 +30,7 @@ class Job extends Model
 
     public function employer()
     {
-        return $this->belongsTo(Users::class, 'employer_id');
+        return $this->belongsTo(\Fickrr\User::class, 'employer_id');
     }
 
     public function applications()

@@ -198,10 +198,24 @@ class RegisterController extends Controller
 						{
 							$data = array('name' => $name, 'username' => $username, 'email' => $email, 'user_type' => $user_type, 'password' => $password,  'verified' => $verified, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s'), 'user_token' => $user_token, 'referral_by' => $referral_by, 'referral_payout' => $referral_payout, 'user_auth_token' => $user_auth_token,  'register_url' => $register_url);
 						}
+						if($user_type == 'client')
+						{
+							$data = array('name' => $name, 'username' => $username, 'email' => $email, 'user_type' => $user_type, 'password' => $password, 'earnings' => $earnings, 'verified' => $verified, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s'), 'user_token' => $user_token, 'referral_by' => $referral_by, 'referral_payout' => $referral_payout, 'user_auth_token' => $user_auth_token, 'register_url' => $register_url, 'user_subscr_download_item' => 1000);
+						}
 				}	
 				else
 				{
-					$data = array('name' => $name, 'username' => $username, 'email' => $email, 'user_type' => $user_type, 'password' => $password, 'earnings' => $earnings, 'verified' => $verified, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s'), 'user_token' => $user_token, 'referral_by' => $referral_by, 'referral_payout' => $referral_payout, 'user_auth_token' => $user_auth_token, 'register_url' => $register_url, 'user_subscr_download_item' => 1000);
+					if($user_type == 'freelancer')
+					{
+						$data = array('name' => $name, 'username' => $username, 'email' => $email, 'user_type' => $user_type, 'password' => $password,  'verified' => $verified, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s'), 'user_token' => $user_token, 'referral_by' => $referral_by, 'referral_payout' => $referral_payout, 'user_auth_token' => $user_auth_token,  'register_url' => $register_url);
+					}
+					elseif($user_type == 'client')
+					{
+						$data = array('name' => $name, 'username' => $username, 'email' => $email, 'user_type' => $user_type, 'password' => $password, 'earnings' => $earnings, 'verified' => $verified, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s'), 'user_token' => $user_token, 'referral_by' => $referral_by, 'referral_payout' => $referral_payout, 'user_auth_token' => $user_auth_token, 'register_url' => $register_url, 'user_subscr_download_item' => 1000);
+					}
+					else{
+						$data = array('name' => $name, 'username' => $username, 'email' => $email, 'user_type' => $user_type, 'password' => $password, 'earnings' => $earnings, 'verified' => $verified, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s'), 'user_token' => $user_token, 'referral_by' => $referral_by, 'referral_payout' => $referral_payout, 'user_auth_token' => $user_auth_token, 'register_url' => $register_url, 'user_subscr_download_item' => 1000);
+					}
 				}
 				
 				$userfind = Members::checkUserExists($email);

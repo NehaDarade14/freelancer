@@ -131,16 +131,20 @@
                 <div class="form-group">
                   <label class="d-block"><strong>{{ __('User Type') }}</strong> <span class="required">*</span></label>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="user_type[]" id="customer" value="{{ $encrypter->encrypt('customer') }}" data-bvalidator="required" />
+                    <input class="form-check-input user-type-checkbox" type="checkbox" name="user_type[]" id="customer" value="{{ $encrypter->encrypt('customer') }}" data-bvalidator="required" />
                     <label class="form-check-label" for="customer">{{ __('Customer') }}</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="user_type[]" id="vendor" value="{{ $encrypter->encrypt('vendor') }}" />
+                    <input class="form-check-input user-type-checkbox" type="checkbox" name="user_type[]" id="vendor" value="{{ $encrypter->encrypt('vendor') }}" />
                     <label class="form-check-label" for="vendor">{{ __('Vendor') }}</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="user_type[]" id="freelancer" value="{{ $encrypter->encrypt('freelancer') }}" />
+                    <input class="form-check-input user-type-checkbox" type="checkbox" name="user_type[]" id="freelancer" value="{{ $encrypter->encrypt('freelancer') }}" />
                     <label class="form-check-label" for="freelancer">{{ __('Freelancer') }}</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="user_type[]" id="client" value="{{ $encrypter->encrypt('client') }}" />
+                    <label class="form-check-label" for="client">{{ __('Client') }}</label>
                   </div>
                 </div>
               </div>
@@ -215,6 +219,23 @@ document.addEventListener("DOMContentLoaded", function () {
     strengthBar.className = 'progress-bar bg-' + color;
     strengthBar.setAttribute('aria-valuenow', width);
     strengthText.textContent = message;
+  });
+
+
+  const clientCheckbox = document.getElementById("client");
+  const otherCheckboxes = document.querySelectorAll(".user-type-checkbox");
+
+  clientCheckbox.addEventListener("change", function () {
+    if (this.checked) {
+      otherCheckboxes.forEach(cb => {
+        cb.checked = false;
+        cb.disabled = true;
+      });
+    } else {
+      otherCheckboxes.forEach(cb => {
+        cb.disabled = false;
+      });
+    }
   });
 });
 </script>

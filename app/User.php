@@ -20,7 +20,7 @@ class User extends Authenticatable
 	 
 	const ADMIN_TYPE = 'admin';
     const DEFAULT_TYPE = 'vendor';
-    const CLINT_TYPE = 'client';
+    const CLIENT_TYPE = 'client';
 	
 	
 	public function isAdmin()    {
@@ -68,8 +68,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-	
-	
-	
+
+    public function jobs()
+    {
+        return $this->hasMany(\Fickrr\Models\Job::class, 'employer_id');
+    }
 	
 }
