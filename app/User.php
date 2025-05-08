@@ -5,6 +5,8 @@ namespace Fickrr;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Fickrr\Models\Bid;
+use Fickrr\Models\JobApplication;
 
 class User extends Authenticatable
 {
@@ -18,6 +20,7 @@ class User extends Authenticatable
 	 
 	const ADMIN_TYPE = 'admin';
     const DEFAULT_TYPE = 'vendor';
+    const CLINT_TYPE = 'client';
 	
 	
 	public function isAdmin()    {
@@ -26,10 +29,23 @@ class User extends Authenticatable
 	
 	public function bids()
 	{
-		return $this->hasMany(\App\Models\Bid::class);
+		return $this->hasMany(Bid::class);
+	}
+	
+	public function applications()
+	{
+		return $this->hasMany(JobApplication::class, 'freelancer_id');
+	}
+	
+	public function getApplication($job)
+	{
+		return $this->applications()->where('job_id', $job->id)->first();
 	}
 	 
-	 
+    public function isClient()    {
+		return $this->user_type === self::CLIENT_TYPE;
+	}
+	
 	 
     protected $fillable = [
         'name', 'email', 'password', 'username', 'user_token', 'earnings', 'user_type','provider', 'provider_id', 'verified', 'user_subscr_download_item',

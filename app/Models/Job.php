@@ -42,4 +42,26 @@ class Job extends Model
     {
         return $query->where('status', 'active');
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        if ($filters['search'] ?? false) {
+            $query->where('title', 'like', '%' . $filters['search'] . '%');
+        }
+
+        if ($filters['job_type'] ?? false) {
+            $query->where('job_type', $filters['job_type']);
+        }
+
+        if ($filters['location'] ?? false) {
+            $query->where('location', 'like', '%' . $filters['location'] . '%');
+        }
+
+        if ($filters['experience_level'] ?? false) {
+            $query->where('experience_level', $filters['experience_level']);
+        }
+
+        return $query;
+    }
+
 }

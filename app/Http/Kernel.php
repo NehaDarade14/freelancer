@@ -74,6 +74,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 		'is_admin' => \Fickrr\Http\Middleware\IsAdmin::class,
+        'is_client' => \Fickrr\Http\Middleware\IsClient::class,
 		'XSS' => \Fickrr\Http\Middleware\XSS::class,
 		'HtmlMinifier' => \Fickrr\Http\Middleware\HtmlMinifier::class,
 		'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,

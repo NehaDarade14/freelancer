@@ -25,62 +25,45 @@
                     
                     </div>
                     <div class="col-md-12">
-                     
+                      
                         <div class="card">
                             <div class="card-header">
-                                <h4>{{ $job->title }}</h4>
-                                <span class="badge bg-{{ $job->status === 'active' ? 'success' : ($job->status === 'closed' ? 'danger' : 'secondary') }}">
-                                    {{ ucfirst($job->status) }}
-                                </span>
+                                <h3>{{ $job->title }}</h3>
+                                <div class="text-muted">
+                                    <span class="mr-3"><i class="fa fa-building"></i> {{ $job->employer->name }}</span>
+                                    <span class="mr-3"><i class="fa fa-briefcase"></i> {{ ucfirst($job->job_type) }}</span>
+                                    <span class="mr-3"><i class="fa fa-map-marker"></i> {{ $job->location }}</span>
+                                </div>
                             </div>
 
                             <div class="card-body">
                                 <div class="mb-4">
-                                    <h5>Job Details</h5>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p><strong>Job Type:</strong> {{ ucfirst($job->job_type) }}</p>
-                                            <p><strong>Experience Level:</strong> {{ ucfirst($job->experience_level) }} Level</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p><strong>Location:</strong> {{ $job->location }}</p>
-                                            <p><strong>Salary:</strong> {{ $job->salary ? '$' . number_format($job->salary, 2) : 'Negotiable' }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <h5>Description</h5>
+                                    <h5>Job Description</h5>
                                     <p>{{ $job->description }}</p>
                                 </div>
 
-                                <div class="mb-4">
-                                    <h5>Required Skills</h5>
-                                    <div class="d-flex flex-wrap gap-2">
-                                        {{ json_decode($job->skills_required) }}
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <h5>Details</h5>
+                                        <ul class="list-unstyled">
+                                            <li><strong>Experience Level:</strong> {{ ucfirst($job->experience_level) }}</li>
+                                            <li><strong>Salary:</strong> {{ $job->salary ? '$'.number_format($job->salary) : 'Negotiable' }}</li>
+                                            <li><strong>Deadline:</strong> {{ $job->deadline->format('M d, Y') }}</li>
+                                        </ul>
                                     </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <h5>Application Deadline</h5>
-                                    <p>{{ $job->deadline->format('F j, Y g:i A') }}</p>
-                                </div>
-
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <a href="{{ route('admin.jobs.index') }}" class="btn btn-secondary">Back to Jobs</a>
+                                    <div class="col-md-6">
+                                        <h5>Required Skills</h5>
+                                        <div class="skills">
+                                            <span class="badge badge-primary">{{ json_decode($job->skills_required) }}</span>
+                                           
+                                        </div>
                                     </div>
-                                    <div>
-                                        <a href="{{ route('admin.jobs.edit', $job->id) }}" class="btn btn-primary">Edit</a>
-                                    
-                                        <form action="{{ route('admin.jobs.destroy', $job->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this job?')">Delete</button>
-                                        </form>
-                                    
-                                    </div>
+                                   
                                 </div>
+                                <div class="d-grid gap-2">
+                                        <a href="{{ route('admin.jobs.index') }}" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -88,7 +71,6 @@
             </div>
         </div>
     </div>
-
     @else
     @include('admin.denied')
     @endif 

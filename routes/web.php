@@ -55,6 +55,7 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 	Route::resource('bid-packs', 'Admin\BidPackController')->except(['show']);
 	Route::post('bid-packs/{bidPack}/toggle-status', 'Admin\BidPackController@toggleStatus')
 	     ->name('bid-packs.toggle-status');
+		 
 	Route::get('/admin/add-vendor', 'Admin\MembersController@add_vendor')->name('admin.add-vendor');
 	Route::post('/admin/add-vendor', 'Admin\MembersController@save_customer');
 	Route::get('/admin/vendor/{token}', 'Admin\MembersController@delete_customer');
@@ -946,17 +947,17 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 /* User-facing Job Routes */
 Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
     Route::get('/jobs', 'JobController@index')->name('jobs.index');
-    Route::get('/jobs/{job}', 'JobController@show')->name('jobs.show');
+    Route::get('/freelancer/jobs/{job}', 'JobController@show')->name('jobs.show');
     Route::get('/jobs/{job}/apply', 'JobController@apply')->name('jobs.apply')->middleware('auth');
     Route::post('/jobs/{job}/apply', 'JobController@submitApplication')->name('jobs.apply.submit')->middleware('auth');
     
     /* Freelancer Job Applications */
     Route::get('/freelancer/jobs', 'JobController@freelancerJobs')->name('freelancer.jobs')->middleware('auth');
-    Route::get('/freelancer/jobs/applications', 'JobController@myApplications')->name('freelancer.jobs.applications')->middleware('auth');
+    Route::get('/jobs/applications', 'JobController@myApplications')->name('freelancer.jobs.applications')->middleware('auth');
     Route::get('/freelancer/jobs/applications/{application}', 'JobController@viewApplication')->name('freelancer.jobs.applications.view')->middleware('auth');
     
     /* Employer Job Management */
-    Route::group(['middleware' => ['auth', 'is_employer']], function() {
+    Route::group(['middleware' => ['auth', 'is_client']], function() {
         Route::get('/employer/jobs', 'JobController@employerJobs')->name('employer.jobs');
         Route::get('/employer/jobs/create', 'JobController@create')->name('employer.jobs.create');
         Route::post('/employer/jobs', 'JobController@store')->name('employer.jobs.store');

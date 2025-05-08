@@ -9,15 +9,16 @@ use Fickrr\Http\Controllers\Controller;
 
 class JobController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $jobs = Job::with('employer')
-            // ->where('status', 'active')
             ->latest()
-            // ->filter(request(['search', 'job_type', 'location', 'experience_level']))
+            ->filter($request->only(['search', 'job_type', 'location', 'experience_level']))
             ->paginate(10);
+
         return view('jobs.index', compact('jobs'));
     }
+
 
     public function create()
     {
