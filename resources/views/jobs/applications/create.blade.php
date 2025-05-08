@@ -78,10 +78,10 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-9 offset-md-3">
                                 <button type="submit" class="btn btn-primary" id="submit-btn">
-                                    <i class="fas fa-paper-plane"></i> Submit Application
+                                    <i class="fa fa-paper-plane"></i> Submit Application
                                 </button>
                                 <a href="{{ route('jobs.show', $job) }}" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Cancel
+                                    <i class="fa fa-times"></i> Cancel
                                 </a>
                             </div>
                         </div>

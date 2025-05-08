@@ -86,16 +86,27 @@ class JobController extends Controller
         //     'search' => $request->search ?? ''
         // ]);
 
-        $jobs = Job::with('employer')
+        if( auth()->user()->user_type=="client"){
+            $jobs = Job::where('employer_id', auth()->id()) 
             ->latest()
             ->filter($request->only(['search', 'job_type', 'location', 'experience_level']))
             ->paginate(10);
 
-        return view('jobs.freelancer.index', compact('jobs'));
+            return view('jobs.freelancer.index', compact('jobs'));
+        }
+        else{
+            $jobs = Job::latest()
+            ->filter($request->only(['search', 'job_type', 'location', 'experience_level']))
+            ->paginate(10);
+
+            return view('jobs.freelancer.index', compact('jobs'));
+        }
+       
     }
 
     public function myApplications(Request $request)
     {
+       
         $applications = JobApplication::with(['job.employer'])
         ->where('freelancer_id', Auth::id())
         ->latest()
@@ -129,7 +140,7 @@ class JobController extends Controller
 
     public function jobApplications(Job $job)
     {
-        $this->authorize('view', $job);
+        // $this->authorize('view', $job);
         
         $applications = $job->applications()
             ->with('freelancer')
@@ -137,5 +148,71 @@ class JobController extends Controller
             ->paginate(10);
 
         return view('jobs.employer.applications', compact('job', 'applications'));
+    }
+
+    public function create()
+    {
+        return view('jobs.employer.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|min:100',
+            'job_type' => 'required|in:full-time,part-time,contract,freelance',
+            'salary' => 'required|numeric|min:1',
+            'location' => 'required|string|max:255',
+            'deadline' => 'required|date|after:today',
+            'experience_level' => 'required|in:entry,mid,senior',
+            'skills_required' => 'required|string|min:1',
+            'skills_required.*' => 'string|max:255'
+        ]);
+
+        $job = new Job($validated);
+        $job->employer_id = Auth::id();
+        $job->status = 'active';
+        $job->save();
+
+        return redirect()->route('employer.jobs')
+            ->with('success', 'Job created successfully!');
+    }
+
+    public function edit(Job $job)
+    {
+        // $this->authorize('update', $job);
+        return view('jobs.employer.edit', compact('job'));
+    }
+
+    public function update(Request $request, Job $job)
+    {
+        // $this->authorize('update', $job);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|min:100',
+            'job_type' => 'required|in:full-time,part-time,contract,freelance',
+            'salary' => 'required|numeric|min:1',
+            'location' => 'required|string|max:255',
+            'deadline' => 'required|date|after:today',
+            'experience_level' => 'required|in:entry,mid,senior',
+            'skills_required' => 'required|string|min:1',
+            'skills_required.*' => 'string|max:255',
+            'status' => 'sometimes|in:active,closed'
+        ]);
+
+        $job->update($validated);
+
+        return redirect()->route('employer.jobs')
+            ->with('success', 'Job updated successfully!');
+    }
+
+    public function destroy(Job $job)
+    {
+        $this->authorize('delete', $job);
+        $job->delete();
+
+        return redirect()->route('employer.jobs')
+            ->with('success', 'Job deleted successfully!');
     }
 }

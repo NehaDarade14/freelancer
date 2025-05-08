@@ -65,11 +65,11 @@
                                         @foreach($jobApplication->attachments as $attachment)
                                             <div class="d-flex align-items-center mb-2">
                                                 <a href="{{ $attachment->getUrl() }}" target="_blank" class="mr-2">
-                                                    <i class="fas fa-file-{{ $attachment->getTypeIcon() }}"></i> {{ $attachment->file_name }}
+                                                    <i class="fa fa-file-{{ $attachment->getTypeIcon() }}"></i> {{ $attachment->file_name }}
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-outline-danger delete-attachment" 
                                                         data-attachment-id="{{ $attachment->id }}">
-                                                    <i class="fas fa-trash"></i>
+                                                    <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
                                         @endforeach
@@ -102,10 +102,10 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-9 offset-md-3">
                                 <button type="submit" class="btn btn-primary" id="submit-btn">
-                                    <i class="fas fa-save"></i> Update Application
+                                    <i class="fa fa-save"></i> Update Application
                                 </button>
                                 <a href="{{ route('jobs.show', $jobApplication->job) }}" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Cancel
+                                    <i class="fa fa-times"></i> Cancel
                                 </a>
                             </div>
                         </div>

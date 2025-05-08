@@ -101,6 +101,10 @@
               <a class="dropdown-item d-flex align-items-center" href="{{ URL::to('/profile-settings') }}">
                 <i class="dwg-settings opacity-60 mr-2"></i> {{ __('Setting') }}
               </a>  
+              @elseif(Auth::user()->user_type == 'client')
+              <a class="dropdown-item d-flex align-items-center" href="{{ URL::to('/all/jobs') }}">
+                <i class="dwg-briefcase opacity-60 mr-2"></i> {{ __('All Jobs') }}
+              </a>  
               @endif
               <div class="dropdown-divider"></div>
               <a class="dropdown-item d-flex align-items-center" href="{{ url('/logout') }}">

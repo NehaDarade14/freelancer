@@ -946,14 +946,13 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 
 /* User-facing Job Routes */
 Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
-    Route::get('/jobs', 'JobController@index')->name('jobs.index');
-    Route::get('/freelancer/jobs/{job}', 'JobController@show')->name('jobs.show');
+    Route::get('/jobs/{job}', 'JobController@show')->name('jobs.show');
     Route::get('/jobs/{job}/apply', 'JobController@apply')->name('jobs.apply')->middleware('auth');
     Route::post('/jobs/{job}/apply', 'JobController@submitApplication')->name('jobs.apply.submit')->middleware('auth');
     
     /* Freelancer Job Applications */
-    Route::get('/freelancer/jobs', 'JobController@freelancerJobs')->name('freelancer.jobs')->middleware('auth');
-    Route::get('/jobs/applications', 'JobController@myApplications')->name('freelancer.jobs.applications')->middleware('auth');
+    Route::get('/all/jobs', 'JobController@freelancerJobs')->name('freelancer.jobs')->middleware('auth');
+    Route::get('/all/jobs/applications', 'JobController@myApplications')->name('freelancer.jobs.applications')->middleware('auth');
     Route::get('/freelancer/jobs/applications/{application}', 'JobController@viewApplication')->name('freelancer.jobs.applications.view')->middleware('auth');
     
     /* Employer Job Management */

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<title>{{ $allsettings->site_title }} - @if(Auth::user()->id != 1) {{ __('Available Jobs') }} @else {{ __('404 Not Found') }} @endif</title>
+<title>{{ $allsettings->site_title }} - @if(Auth::user()->id != 1) {{ __('My Job Postings') }} @else {{ __('404 Not Found') }} @endif</title>
 @include('meta')
 @include('style')
 </head>
@@ -14,12 +14,12 @@
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-star">
                 <li class="breadcrumb-item"><a class="text-nowrap" href="{{ URL::to('/') }}"><i class="dwg-home"></i>{{ __('Home') }}</a></li>
-                <li class="breadcrumb-item text-nowrap active" aria-current="page">{{ __('Available Jobs') }}</li>
+                <li class="breadcrumb-item text-nowrap active" aria-current="page">{{ __('My Job Postings') }}</li>
             </ol>
             </nav>
         </div>
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 mb-0 text-white">{{ __('Available Jobs') }}</h1>
+            <h1 class="h3 mb-0 text-white">{{ __('My Job Postings') }}</h1>
         </div>
     </div>
 </div>
@@ -94,7 +94,7 @@
                                                             Edit
                                                         </a>
                                                         <a href="{{ route('jobs.show', $job) }}" 
-                                                        class="btn btn-outline-info" target="_blank">
+                                                        class="btn btn-outline-info">
                                                             View
                                                         </a>
                                                     </div>

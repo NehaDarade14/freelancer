@@ -58,10 +58,10 @@
                                             <div class="col-md-4 mb-3">
                                                 <div class="card">
                                                     <div class="card-body text-center">
-                                                        <i class="fas fa-file-{{ str_replace(['jpg', 'jpeg', 'png'], 'image', strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION))) }} fa-3x mb-2"></i>
-                                                        <h6 class="card-title">{{ Str::limit($attachment->name, 20) }}</h6>
+                                                        <i class="fa fa-file-{{ str_replace(['jpg', 'jpeg', 'png'], 'image', strtolower(pathinfo($attachment->name, PATHINFO_EXTENSION))) }} fa-3x mb-2"></i>
+                                                        <h6 class="card-title">{{ Str::limit($attachment->name, 15) }}</h6>
                                                         <a href="{{ Storage::url($attachment->path) }}" target="_blank" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-download"></i> Download
+                                                            <i class="fa fa-download"></i> Download
                                                         </a>
                                                     </div>
                                                 </div>
@@ -76,7 +76,7 @@
                     <div class="d-flex justify-content-between">
                         @can('update', $application)
                             <a href="{{ route('job-applications.edit', $application) }}" class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit Application
+                                <i class="fa fa-edit"></i> Edit Application
                             </a>
                         @endcan
 
@@ -85,13 +85,13 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to withdraw this application?')">
-                                    <i class="fas fa-trash"></i> Withdraw Application
+                                    <i class="fa fa-trash"></i> Withdraw Application
                                 </button>
                             </form>
                         @endcan
 
                         <a href="{{ route('jobs.show', $application->job) }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Back to Job
+                            <i class="fa fa-arrow-left"></i> Back to Job
                         </a>
                     </div>
                 </div>

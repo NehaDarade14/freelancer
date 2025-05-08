@@ -54,8 +54,9 @@
                                     <div class="col-md-6">
                                         <h5>Required Skills</h5>
                                         <div class="skills">
-                                            <span class="badge badge-primary">{{ json_decode($job->skills_required) }}</span>
-                                           
+                                            @foreach(explode(',', $job->skills_required) as $skill)
+                                                <span class="badge badge-primary">{{ trim($skill) }}</span>
+                                            @endforeach
                                         </div>
                                     </div>
                                    
