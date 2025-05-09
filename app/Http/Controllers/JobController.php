@@ -4,6 +4,7 @@ namespace Fickrr\Http\Controllers;
 
 use Fickrr\Models\Job;
 use Fickrr\Models\JobApplication;
+use Fickrr\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
