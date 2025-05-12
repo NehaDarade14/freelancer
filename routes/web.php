@@ -944,6 +944,24 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
     Route::post('/admin/jobs/{job}/applications/{application}/status', 'Admin\JobController@updateApplicationStatus')->name('admin.jobs.applications.status');
 });
 
+/* Messaging Routes */
+// Route::group(['middleware' => ['auth']], function() {
+    Route::group(['middleware' => ['auth', 'HtmlMinifier', 'cache', 'XSS']], function() {
+        Route::post('/message', 'MessageController@store')->name('message.create');
+        Route::get('/message/{application}', 'MessageController@index')->name('message.index');
+        Route::get('/jobs/applications/{application}/messages', 'MessageController@showMessages')->name('jobs.applications.messages');
+        
+        // AJAX message routes
+        Route::get('/message/{application}/get', 'MessageController@getMessages')->name('message.get');
+        Route::post('/message/{application}/mark-read', 'MessageController@markAsRead')->name('message.markRead');
+        
+        // Notification routes
+        Route::get('/all/notification', 'NotificationController@index')->name('notifications.index');
+        Route::get('/all/notifications/mark-as-read', 'NotificationController@markAsRead')->name('notifications.markAsRead');
+        Route::get('/notifications/unread-count', 'NotificationController@getUnreadCount')->name('notifications.unreadCount');
+    });
+// });
+
 /* User-facing Job Routes */
 Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
     Route::get('/jobs/{job}', 'JobController@show')->name('jobs.show');
@@ -963,6 +981,9 @@ Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
         Route::get('/employer/jobs/{job}/edit', 'JobController@edit')->name('employer.jobs.edit');
         Route::put('/employer/jobs/{job}', 'JobController@update')->name('employer.jobs.update');
         Route::delete('/employer/jobs/{job}', 'JobController@destroy')->name('employer.jobs.destroy');
+        Route::delete('/employer/jobs/{job}/applications/{application}', 'JobController@destroyApplication')->name('job-applications.destroy');
         Route::get('/employer/jobs/{job}/applications', 'JobController@jobApplications')->name('employer.jobs.applications');
+        Route::get('/employer/jobs/{job}/applications/{application}', 'JobController@viewEmployerApplication')->name('employer.jobs.applications.view');
+		Route::post('/employer/jobs/{job}/applications/{application}/status', 'JobController@updateApplicationStatus')->name('employer.jobs.applications.status');
     });
 });

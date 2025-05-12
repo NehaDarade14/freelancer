@@ -151,6 +151,15 @@ class JobController extends Controller
         return view('jobs.employer.applications', compact('job', 'applications'));
     }
 
+    public function viewEmployerApplication(Job $job, JobApplication $application)
+    {
+        // $this->authorize('view', $job);
+        // $this->authorize('view', $application);
+        
+        $application->load('freelancer', 'job');
+        return view('jobs.applications.show', compact('job', 'application'));
+    }
+
     public function create()
     {
         return view('jobs.employer.create');
@@ -210,10 +219,40 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
-        $this->authorize('delete', $job);
+        // $this->authorize('delete', $job);
         $job->delete();
 
         return redirect()->route('employer.jobs')
             ->with('success', 'Job deleted successfully!');
+    }
+
+    public function destroyApplication(Job $job, JobApplication $application)
+    {
+        // Only allow employer who owns the job or freelancer who submitted the application
+        if (Auth::id() !== $job->employer_id && Auth::id() !== $application->freelancer_id) {
+            abort(403);
+        }
+
+        $application->delete();
+
+        return redirect()->back()
+            ->with('success', 'Application withdrawn successfully!');
+    }
+
+    public function updateApplicationStatus(Request $request, Job $job, JobApplication $application)
+    {
+        // Only allow employer who owns the job
+        if (Auth::id() !== $job->employer_id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,accepted,rejected'
+        ]);
+
+        $application->update($validated);
+
+        return redirect()->back()
+            ->with('success', 'Application status updated successfully!');
     }
 }

@@ -28,6 +28,25 @@
             <div class="bg-secondary px-4 py-3">
               <h3 class="font-size-sm mb-0 text-muted">{{ __('account') }}</h3>
             </div>
+            <script>
+            function updateNotificationCount() {
+                fetch('{{ route("notifications.unreadCount") }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        const badge = document.getElementById('notificationBadge');
+                        if (data.count > 0) {
+                            badge.textContent = data.count;
+                            badge.style.display = 'inline-block';
+                        } else {
+                            badge.style.display = 'none';
+                        }
+                    });
+            }
+ 
+            // Update immediately and every 30 seconds
+            updateNotificationCount();
+            setInterval(updateNotificationCount, 10000);
+            </script>
             <ul class="list-unstyled mb-0">
             @if(Auth::user()->user_type == 'vendor')
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/user') }}/{{ Auth::user()->username }}"><i class="dwg-home opacity-60 mr-2"></i>{{ __('Profile') }}</a></li>
@@ -52,11 +71,13 @@
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/profile-settings') }}"><i class="dwg-settings opacity-60 mr-2"></i>{{ __('Setting') }}</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/jobs') }}"><i class="dwg-briefcase opacity-60 mr-2"></i>{{ __('Jobs') }}</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/jobs/applications') }}"><i class="dwg-list opacity-60 mr-2"></i>{{ __('My Applications') }}</a></li>
+            <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/notification') }}"><i class="dwg-bell opacity-60 mr-2"></i>{{ __('Notifications') }} <span id="notificationBadge" class="badge badge-primary badge-pill ml-auto" style="display: none">0</span></a></li>
             @endif 
             @if(Auth::user()->user_type == 'client')
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/employer/jobs') }}"><i class="dwg-briefcase opacity-60 mr-2"></i>{{ __('My Jobs') }}</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/jobs') }}"><i class="dwg-briefcase opacity-60 mr-2"></i>{{ __('All Jobs') }}</a></li>
-            @endif    
+            <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/notification') }}"><i class="dwg-bell opacity-60 mr-2"></i>{{ __('Notifications') }} <span id="notificationBadge" class="badge badge-primary badge-pill ml-auto" style="display: none">0</span></a></li>
+            @endif
             <li class="mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ url('/logout') }}"><i class="dwg-sign-out opacity-60 mr-2"></i>{{ __('Logout') }}</a></li>
              
           </ul>

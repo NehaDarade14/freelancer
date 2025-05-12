@@ -45,6 +45,25 @@
               <i class="navbar-tool-icon dwg-heart"></i>
             </div>
           </a>
+
+          <!-- Notifications Icon -->
+          @auth
+          <a class="navbar-tool ml-1" href="{{ route('notifications.index') }}">
+            <span class="navbar-tool-tooltip">{{ __('Notifications') }}</span>
+            <div class="navbar-tool-icon-box">
+              <i class="navbar-tool-icon dwg-bell"></i>
+              @php
+                $unreadCount = \Fickrr\Models\Notification::where('user_id', auth()->id())
+                    ->where('is_read', false)
+                    ->count();
+              @endphp
+              @if($unreadCount > 0)
+              <span class="navbar-tool-label" id="notificationBadgehead">{{ $unreadCount }}</span>
+              @endif
+            </div>
+          </a>
+          @endauth
+
           <!-- User Profile (Login or Dropdown with Cash/Earnings) -->
           @if(Auth::guest())
           <a class="navbar-tool ml-1 mr-n1" href="{{ URL::to('/login') }}">
@@ -165,3 +184,27 @@
     </div>
   </div>
 </header>
+
+<script>
+function updateNotificationCount() {
+    fetch('{{ route("notifications.unreadCount") }}')
+        .then(response => response.json())
+        .then(data => {
+         
+          const badge = document.getElementById('notificationBadgehead');
+          if (badge) {
+              if (data.count > 0) {
+                  badge.textContent = data.count;
+                  badge.style.display = 'inline-block';
+              } else {
+                  badge.style.display = 'none';
+              }
+          }
+
+        });
+}
+
+// Update immediately and every 30 seconds
+updateNotificationCount();
+setInterval(updateNotificationCount, 10000);
+</script>

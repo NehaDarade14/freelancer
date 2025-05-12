@@ -51,7 +51,7 @@ class JobApplication extends Model
 
     public function freelancer()
     {
-        return $this->belongsTo(User::class, 'freelancer_id');
+        return $this->belongsTo(\Fickrr\User::class, 'freelancer_id');
     }
 
     public function scopeFilter($query, $filters)

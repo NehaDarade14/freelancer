@@ -84,6 +84,10 @@
                                                         class="btn btn-sm btn-outline-primary">
                                                             View
                                                         </a>
+                                                        <a href="{{ route('message.index', $application) }}"
+                                                                    class="btn btn-sm btn-outline-info">
+                                                                        Message
+                                                                    </a>
                                                     </td>
                                                 </tr>
                                                 @endforeach
