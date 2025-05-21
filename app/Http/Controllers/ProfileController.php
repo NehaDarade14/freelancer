@@ -4309,6 +4309,8 @@ class ProfileController extends Controller
 		'skills' => $request->input('skills'),
 		'experience' => $request->input('experience'),
 		'professional_bio' => $request->input('professional_bio'),
+		'available' => $request->input('available'),
+		'rating' => $request->input('rating')
     ];
 
     // Handle the user photo upload

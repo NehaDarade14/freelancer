@@ -40,6 +40,8 @@
             </div>
             <form action="{{ route('freelancer-profile-settings') }}" class="needs-validation" id="profile_form" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
+                
+              
                 <!-- Step 1: Basic Info -->
                 <div class="step" id="step1">
                     <div class="row">
@@ -200,7 +202,29 @@
                             </div>
                         </div>  
                     </div>
-
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="available">{{ __('Availability') }}</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="available" id="full_time" value="full_time" @if(Auth::user()->available == 'full_time') checked @endif>
+                                    <label class="form-check-label" for="full_time">{{ __('Full Time') }}</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="available" id="part_time" value="part_time" @if(Auth::user()->available == 'part_time') checked @endif>
+                                    <label class="form-check-label" for="part_time">{{ __('Part Time') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Field -->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="rating">{{ __('Rating') }} (0-5)</label>
+                                <input type="number" class="form-control" id="rating" name="rating" min="0" max="5" step="0.1" value="{{ Auth::user()->rating ?? '' }}">
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 mb-1">
                             <h4>{{ __('Portfolio & Bio') }}</h4>
