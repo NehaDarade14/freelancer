@@ -72,7 +72,7 @@
                                                 <td>{{ $job->title }}</td>
                                                 <td>{{ ucfirst($job->job_type) }}</td>
                                                 <td>
-                                                    <a href="{{ route('employer.jobs.applications', $job) }}">
+                                                    <a href="{{ route('employer.jobs.applications', $job) }}" class="badge badge-secondary">
                                                         {{ $job->applications_count }} applications
                                                     </a>
                                                 </td>

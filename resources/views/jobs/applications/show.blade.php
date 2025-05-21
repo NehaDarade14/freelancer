@@ -118,8 +118,11 @@
                                                         <div class="input-group">
                                                             <select name="status" class="form-control">
                                                                 <option value="pending" {{ $application->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                                                <option value="accepted" {{ $application->status === 'accepted' ? 'selected' : '' }}>Accepted</option>
+                                                                <option value="in_progress" {{ $application->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
+                                                                <option value="review" {{ $application->status === 'review' ? 'selected' : '' }}>Review</option>
+                                                                <option value="completed" {{ $application->status === 'completed' ? 'selected' : '' }}>Completed</option>
                                                                 <option value="rejected" {{ $application->status === 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                                                
                                                             </select>
                                                             <div class="input-group-append">
                                                                 <button type="submit" class="btn btn-primary">

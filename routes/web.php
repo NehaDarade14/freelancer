@@ -472,6 +472,13 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 /* admin panel */
 
 Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
+    Route::get('/project-tracking', 'JobController@view_project_tracking')->middleware('auth');
+    Route::post('/project-tracking/{job}/{freelancerId}/update-status', 'JobController@update_project_status')
+        ->name('project.update_status')
+        ->middleware('auth');
+    Route::post('/project-tracking/{job}/update-job-status', 'JobController@updateStatus')
+        ->name('project.update_job_status')
+        ->middleware('auth');
 
 Route::get('/language/{locale}', function ($locale) {
     app()->setLocale($locale);

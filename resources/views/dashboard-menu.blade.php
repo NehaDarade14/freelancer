@@ -71,11 +71,14 @@
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/profile-settings') }}"><i class="dwg-settings opacity-60 mr-2"></i>{{ __('Setting') }}</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/jobs') }}"><i class="dwg-briefcase opacity-60 mr-2"></i>{{ __('Jobs') }}</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/jobs/applications') }}"><i class="dwg-list opacity-60 mr-2"></i>{{ __('My Applications') }}</a></li>
+            <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/project-tracking') }}"><i class="dwg-list opacity-60 mr-2"></i>{{ __('Project Tracking') }}</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/notification') }}"><i class="dwg-bell opacity-60 mr-2"></i>{{ __('Notifications') }} <span id="notificationBadge" class="badge badge-primary badge-pill ml-auto" style="display: none">0</span></a></li>
+           
             @endif 
             @if(Auth::user()->user_type == 'client')
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/employer/jobs') }}"><i class="dwg-briefcase opacity-60 mr-2"></i>{{ __('My Jobs') }}</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/jobs') }}"><i class="dwg-briefcase opacity-60 mr-2"></i>{{ __('All Jobs') }}</a></li>
+            <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/project-tracking') }}"><i class="dwg-list opacity-60 mr-2"></i>{{ __('Project Tracking') }}</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ URL::to('/all/notification') }}"><i class="dwg-bell opacity-60 mr-2"></i>{{ __('Notifications') }} <span id="notificationBadge" class="badge badge-primary badge-pill ml-auto" style="display: none">0</span></a></li>
             @endif
             <li class="mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ url('/logout') }}"><i class="dwg-sign-out opacity-60 mr-2"></i>{{ __('Logout') }}</a></li>

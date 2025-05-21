@@ -14,6 +14,7 @@ class JobController extends Controller
     public function index(Request $request)
     {
         $jobs = Job::with('employer')
+            ->where('status',"active")
             ->latest()
             ->filter($request->only(['search', 'job_type', 'location', 'experience_level']))
             ->paginate(10);
@@ -87,21 +88,14 @@ class JobController extends Controller
         //     'search' => $request->search ?? ''
         // ]);
 
-        if( auth()->user()->user_type=="client"){
-            $jobs = Job::where('employer_id', auth()->id()) 
-            ->latest()
-            ->filter($request->only(['search', 'job_type', 'location', 'experience_level']))
-            ->paginate(10);
-
-            return view('jobs.freelancer.index', compact('jobs'));
-        }
-        else{
+        
             $jobs = Job::latest()
+            ->where("status","active")
             ->filter($request->only(['search', 'job_type', 'location', 'experience_level']))
             ->paginate(10);
 
             return view('jobs.freelancer.index', compact('jobs'));
-        }
+        
        
     }
 
@@ -132,9 +126,12 @@ class JobController extends Controller
     // Employer job management
     public function employerJobs()
     {
-        $jobs = Auth::user()->jobs()
-            ->latest()
-            ->paginate(10);
+        $jobs = \Fickrr\Models\Job::with(['applications'])
+        ->withCount('applications')
+        ->where('employer_id', auth()->id())
+        ->latest()
+        ->paginate(10);
+          
 
         return view('jobs.employer.index', compact('jobs'));
     }
@@ -254,5 +251,159 @@ class JobController extends Controller
 
         return redirect()->back()
             ->with('success', 'Application status updated successfully!');
+    }
+
+    public function view_project_tracking()
+    {
+        if (auth()->user()->user_type === 'client') {
+            // Client view - show all their jobs with application statuses and counts
+            $jobs = \Fickrr\Models\Job::with(['applications' => function($query) {
+                    $query->where('freelancer_id', "!=", 0);
+                }])
+                ->where('employer_id', auth()->id())
+                ->get()
+                ->map(function($job) {
+                    $steps = [
+                        'pending' => $job->applications->where('status', 'pending')->count(),
+                        'in_progress' => $job->applications->where('status', 'in_progress')->count(),
+                        'review' => $job->applications->where('status', 'review')->count(),
+                        'completed' => $job->applications->where('status', 'completed')->count()
+                    ];
+                    
+                    $totalSteps = array_sum($steps);
+                    $completedValue = $steps['completed'] * 100;
+                    $inProgressValue = $steps['in_progress'] * 50;
+                    $reviewValue = $steps['review'] * 75;
+                    
+                    $progress = $totalSteps > 0
+                        ? round(($completedValue + $inProgressValue + $reviewValue) / ($totalSteps * 100) * 100)
+                        : 0;
+
+                    return (object) [
+                        'id' => $job->id,
+                        'name' => $job->title,
+                        'client' => (object) ['name' => auth()->user()->name],
+                        'progress' => $progress,
+                        'deadline' => $job->deadline,
+                        'job_status' => $job->status,
+                        'job_status_color' => $this->getStatusColor($job->status),
+                        'application_count' => $job->applications->count() ,
+                        'application_status' => $job->applications->first() ? $job->applications->first()->status : "pending",
+                        'application_status_color' => $this->getApplicationStatusColor($job->applications->first() ? $job->applications->first()->status : "pending"),
+                        'steps' => $steps,
+                        'can_update' => true,
+                        'freelancer_id' =>$job->applications->first() ? $job->applications->first()->freelancer_id : 0
+                    ];
+                });
+        } else {
+            // Freelancer view - show their applications
+            $jobs = \Fickrr\Models\Job::with(['employer', 'applications' => function($query) {
+                $query->where('freelancer_id', auth()->id());
+            }])
+            ->get()
+            ->map(function($job) {
+                $steps = [
+                    'pending' => $job->applications->where('status', 'pending')->count(),
+                    'in_progress' => $job->applications->where('status', 'in_progress')->count(),
+                    'review' => $job->applications->where('status', 'review')->count(),
+                    'completed' => $job->applications->where('status', 'completed')->count()
+                ];
+                
+                $totalSteps = array_sum($steps);
+                $completedValue = $steps['completed'] * 100;
+                $inProgressValue = $steps['in_progress'] * 50;
+                $reviewValue = $steps['review'] * 75;
+                
+                $progress = $totalSteps > 0
+                    ? round(($completedValue + $inProgressValue + $reviewValue) / ($totalSteps * 100) * 100)
+                    : 0;
+
+                return (object) [
+                    'id' => $job->id,
+                    'name' => $job->title,
+                    'client' => (object) ['name' => $job->employer->name],
+                    'progress' => $progress,
+                    'deadline' => $job->deadline,
+                    'job_status' => $job->status,
+                    'job_status_color' => $this->getStatusColor($job->status),
+                    'application_count' => $job->applications->count() ,
+                    'application_status' => $job->applications->first() ? $job->applications->first()->status : "pending",
+                    'application_status_color' => $this->getApplicationStatusColor($job->applications->first() ? $job->applications->first()->status : "pending"),
+                    'steps' => $steps,
+                    'can_update' => false,
+                    'freelancer_id' => $job->applications->first() ?  $job->applications->first()->freelancer_id : 0
+                ];
+            });
+        }
+        return view('pages.project-tracking', [
+            'projects' => $jobs
+        ]);
+    }
+
+    public function update_project_status(Request $request, $jobId, $freelancerId)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,in_progress,review,completed,rejected'
+        ]);
+
+        $application = JobApplication::where('job_id', $jobId)
+            ->where('freelancer_id', $freelancerId)
+            ->first();
+
+        if (!$application) {
+            return response()->json(['success' => false, 'message' => 'Application not found'], 404);
+        }
+
+        if (auth()->user()->user_type !== 'client') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $application->update(['status' => $validated['status']]);
+
+        return response()->json(['success' => true]);
+    }
+
+
+    private function getStatusColor($status)
+    {
+        switch(strtolower($status)) {
+            case 'active': return 'success';
+            case 'completed': return 'primary';
+            case 'pending': return 'warning';
+            default: return 'secondary';
+        }
+    }
+
+    private function getApplicationStatusColor($status)
+    {
+        switch(strtolower($status)) {
+            case 'completed': return 'success';
+            case 'in_progress': return 'primary';
+            case 'review': return 'info';
+            case 'pending': return 'warning';
+            case 'rejected': return 'danger';
+            default: return 'secondary';
+        }
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $job = Job::findOrFail($id);
+        
+        // Update job status if client makes changes
+        if($request->has('job_status')) {
+            $job->status = $request->job_status;
+        }
+        
+        // Update application status
+        // if($job->applications->count() > 0) {
+        //     $application = $job->applications->first();
+        //     $application->status = $request->status;
+        //     $application->save();
+        // }
+
+        $job->save();
+
+        return response()->json(['success' => true]);
     }
 }
