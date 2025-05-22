@@ -996,7 +996,8 @@ Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
     Route::get('/projects/tracking/{project}', 'ProjectTrackingController@show')->name('projects.tracking.show');
     Route::post('/projects/tracking/{project}/progress', 'ProjectTrackingController@updateProgress')->name('projects.update-progress');
     Route::post('/projects/tracking/{project}/status', 'ProjectTrackingController@updateStatus')->name('projects.update-status');
-    
+    Route::put('/projects/trackingkanban/{project}/status', 'ProjectTrackingController@updateKanbanStatus')->name('projects.update-kanban-status');
+	 
     /* Project Dashboard */
     Route::get('/projects/dashboard', 'ProjectTrackingController@dashboard')->name('projects.dashboard');
     Route::get('/projects/kanban', 'ProjectTrackingController@kanban')->name('projects.kanban');

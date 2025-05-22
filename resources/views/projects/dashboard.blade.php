@@ -160,7 +160,7 @@
                                                     <div class="dropdown-header">View Options:</div>
                                                     <a class="dropdown-item" href="#" id="viewTable">Table View</a>
                                                     <a class="dropdown-item" href="#" id="viewKanban">Kanban Board</a>
-                                                    <a class="dropdown-item" href="#" id="viewGantt">Gantt Chart</a>
+                                                   
                                                 </div>
                                             </div>
                                         </div>

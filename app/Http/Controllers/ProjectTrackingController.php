@@ -34,6 +34,7 @@ class ProjectTrackingController extends Controller
 
     public function kanban()
     {
+       
         $projects = auth()->user()->projects()
             ->with(['team', 'milestones'])
             ->get()
@@ -58,7 +59,6 @@ class ProjectTrackingController extends Controller
                     'custom_class' => 'bg-' . ($project->isOverdue() ? 'danger' : 'success')
                 ];
             });
-
         return view('projects.gantt', compact('projects'));
     }
 
@@ -109,5 +109,24 @@ class ProjectTrackingController extends Controller
         ]);
 
         return back()->with('success', 'Status updated successfully');
+    }
+
+    public function updateKanbanStatus(Request $request, Project $project)
+    {
+        // $this->authorize('update', $project);
+
+        $request->validate([
+            'status' => 'required|in:pending,active,completed,review'
+        ]);
+
+        $project->update([
+            'status' => $request->status,
+            'completed_at' => $request->status == 'completed' ? now() : null
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully'
+        ]);
     }
 }
