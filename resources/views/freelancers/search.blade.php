@@ -83,7 +83,7 @@
                                     <div class="card mb-3">
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-9">
+                                                <div class="col-md-6">
                                                     @if($freelancer->user_photo != '')
                                                         <img class="rounded-circle" width="80" src="{{ url('/') }}/public/storage/users/{{ $freelancer->user_photo }}"  alt="{{ $freelancer->name }}">
                                                     @else
@@ -122,8 +122,12 @@
                                                     <span class="ml-2">({{ $rating }} stars)</span>
                                                     <p> Availability: {{ ucfirst(str_replace('_', ' ', $freelancer->available)); }}</p>
                                                 </div>
-                                                <div class="col-md-3 text-right">
-                                                    <a href="{{ route('freelancer-profile', $freelancer->id) }}" class="btn btn-outline-primary">View Profile</a>
+                                                <div class="col-md-6 text-right">
+                                                    <a href="{{ route('freelancer-profile', $freelancer->id) }}" class="btn btn-outline-primary"> <i class="dwg-eye mr-1"></i>View Profile</a>
+                                                    <a href="{{ route('projects.create', ['freelancer_id' => $freelancer->id]) }}"
+                                                       class="btn btn-primary">
+                                                       <i class="dwg-briefcase mr-1"></i>Hire
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>

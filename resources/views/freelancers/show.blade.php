@@ -43,6 +43,12 @@
                             </div>
 
                             <div class="card-body">
+                                <div class="text-right mb-4">
+                                    <a href="{{ route('projects.create', ['freelancer_id' => $freelancer->id]) }}"
+                                       class="btn btn-primary">
+                                       <i class="dwg-briefcase mr-2"></i>Initiate Project
+                                    </a>
+                                </div>
                                 <div class="row mb-4">
                                     <div class="col-md-4 text-center">
                                             @if($freelancer->user_photo != '')

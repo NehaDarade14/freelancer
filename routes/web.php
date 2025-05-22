@@ -472,7 +472,7 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 /* admin panel */
 
 Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
-    Route::get('/project-tracking', 'JobController@view_project_tracking')->middleware('auth');
+    Route::get('/project-tracking', 'JobController@view_project_tracking')->name('project-tracking')->middleware('auth');
     Route::post('/project-tracking/{job}/{freelancerId}/update-status', 'JobController@update_project_status')
         ->name('project.update_status')
         ->middleware('auth');
@@ -980,9 +980,21 @@ Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
     
     /* Freelancer Job Applications */
     Route::get('/all/jobs', 'JobController@freelancerJobs')->name('freelancer.jobs')->middleware('auth');
+    
+    /* Project Initiation with Freelancer */
+    Route::get('/projects/create/{freelancer_id}', 'ProjectsController@create')
+        ->name('projects.create')
+        ->middleware('auth');
+    Route::post('/projects', 'ProjectsController@store')
+        ->name('projects.store')
+        ->middleware('auth');
     Route::get('/all/jobs/applications', 'JobController@myApplications')->name('freelancer.jobs.applications')->middleware('auth');
     Route::get('/freelancer/jobs/applications/{application}', 'JobController@viewApplication')->name('freelancer.jobs.applications.view')->middleware('auth');
     
+    /* Project Tracking */
+    Route::get('/projects/tracking', 'ProjectTrackingController@index')->name('projects.tracking');
+    Route::get('/projects/tracking/{project}', 'ProjectTrackingController@show')->name('projects.tracking.show');
+
     /* Employer Job Management */
     Route::group(['middleware' => ['auth', 'is_client']], function() {
         Route::get('/employer/jobs', 'JobController@employerJobs')->name('employer.jobs');
