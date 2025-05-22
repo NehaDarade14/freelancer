@@ -5,6 +5,8 @@ namespace Fickrr\Http\Controllers;
 use Illuminate\Http\Request;
 use Fickrr\User;
 use Fickrr\Models\UserType;
+use Fickrr\Models\Project;
+use Auth;
 
 class FreelancerSearchController extends Controller
 {
@@ -81,6 +83,20 @@ class FreelancerSearchController extends Controller
             })
             ->findOrFail($id);
 
-        return view('freelancers.show', compact('freelancer'));
+    
+            $hasActiveProject = false;
+        if ($freelancer) {
+            $hasActiveProject = Project::where(function($query) use ($id) {
+                $query->where('client_id', Auth::id())
+                      ->where('freelancer_id', $id)
+                      ->whereIn('status', ['active', 'in_progress']);
+            })->orWhere(function($query) use ($id) {
+                $query->where('client_id', $id)
+                      ->where('freelancer_id', Auth::id())
+                      ->whereIn('status', ['active', 'in_progress']);
+            })->exists();
+        }
+
+        return view('freelancers.show', compact('freelancer','hasActiveProject'));
     }
 }

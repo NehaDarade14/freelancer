@@ -33,7 +33,9 @@ class MessageController extends Controller
 
         // Get all conversations for the sidebar
         $conversations = Message::getConversations(Auth::id());
-     
+        
+       
+      
         return view('messages.index', compact('messages', 'conversations', 'user'));
     }
 

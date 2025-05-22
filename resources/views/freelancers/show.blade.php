@@ -146,9 +146,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        @if($hasActiveProject)
+                                             @if($hasActiveProject)
                                         <div class="mt-4">
                                             <h5>Contact Information</h5>
                                             <div class="card">
@@ -164,6 +162,9 @@
                                             </div>
                                         </div>
                                         @endif
+                                        </div>
+
+                                       
                                     </div>
                                 </div>
                             </div>
