@@ -11,12 +11,12 @@ class NotificationController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $notifications = Notification::with('message')
+        $notifications = Notification::with('message','user')
             ->where('user_id', $user->id)
             ->where('is_read', false)
             ->orderBy('created_at', 'desc')
             ->get();
-
+            
         return view('notifications.index', compact('notifications'));
     }
 

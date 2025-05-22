@@ -43,9 +43,9 @@
                             @if($notifications->count() > 0)
                                 <div class="list-group">
                                     @foreach($notifications as $notification)
-                                        <a href="{{ route('jobs.applications.messages', $notification->message->job_application_id) }}" class="list-group-item list-group-item-action">
+                                        <a href="{{ route('messages.index', ['user_id' => $notification->message->sender_id]) }}" class="list-group-item list-group-item-action">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">{{ $notification->message->user->name }}</h5>
+                                                <h5 class="mb-1">{{ $notification->user->name }}</h5>
                                                 <small>{{ $notification->created_at->diffForHumans() }}</small>
                                             </div>
                                             <p class="mb-1">New message: {{ Str::limit($notification->message->content, 50) }}</p>

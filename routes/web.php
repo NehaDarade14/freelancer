@@ -955,22 +955,27 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 });
 
 /* Messaging Routes */
-// Route::group(['middleware' => ['auth']], function() {
-    Route::group(['middleware' => ['auth', 'HtmlMinifier', 'cache', 'XSS']], function() {
-        Route::post('/message', 'MessageController@store')->name('message.create');
-        Route::get('/message/{application}', 'MessageController@index')->name('message.index');
-        Route::get('/jobs/applications/{application}/messages', 'MessageController@showMessages')->name('jobs.applications.messages');
-        
-        // AJAX message routes
-        Route::get('/message/{application}/get', 'MessageController@getMessages')->name('message.get');
-        Route::post('/message/{application}/mark-read', 'MessageController@markAsRead')->name('message.markRead');
-        
-        // Notification routes
-        Route::get('/all/notification', 'NotificationController@index')->name('notifications.index');
-        Route::get('/all/notifications/mark-as-read', 'NotificationController@markAsRead')->name('notifications.markAsRead');
-        Route::get('/notifications/unread-count', 'NotificationController@getUnreadCount')->name('notifications.unreadCount');
-    });
-// });
+Route::group(['middleware' => ['auth', 'HtmlMinifier', 'cache', 'XSS']], function() {
+    // Main messaging interface
+    Route::get('/messages', 'MessageController@index')->name('messages.index');
+    
+    // Message operations
+    Route::post('/messages', 'MessageController@store')->name('messages.store');
+     
+    // Message stats
+    Route::get('/messages/unread-count', 'MessageController@getUnreadCount')->name('messages.unread-count');
+    
+    // Contact info access
+    Route::get('/messages/contact-info/{id}', 'MessageController@getContactInfo')->name('messages.contact-info');
+    
+    // Project-based contact access
+    Route::get('/projects/{project}/contact-info', 'MessageController@getProjectContactInfo')->name('projects.contact-info');
+    
+    // Notification routes
+    Route::get('/all/notification', 'NotificationController@index')->name('notifications.index');
+    Route::get('/all/notifications/mark-as-read', 'NotificationController@markAsRead')->name('notifications.markAsRead');
+    Route::get('/notifications/unread-count', 'NotificationController@getUnreadCount')->name('notifications.unreadCount');
+});
 
 /* User-facing Job Routes */
 Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {

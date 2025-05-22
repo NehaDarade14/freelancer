@@ -46,7 +46,7 @@ class ProjectsController extends Controller
             'status' => 'pending'
         ]);
 
-        return redirect()->route('project-tracking')
+        return redirect()->route('projects.dashboard')
             ->with('success', 'Project initiated successfully!');
     }
 }

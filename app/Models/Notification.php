@@ -3,6 +3,7 @@
 namespace Fickrr\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Fickrr\User;
 
 class Notification extends Model
 {

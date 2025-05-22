@@ -45,8 +45,12 @@
                             <div class="card-body">
                                 <div class="text-right mb-4">
                                     <a href="{{ route('projects.create', ['freelancer_id' => $freelancer->id]) }}"
-                                       class="btn btn-primary">
+                                       class="btn btn-primary mr-2">
                                        <i class="dwg-briefcase mr-2"></i>Initiate Project
+                                    </a>
+                                    <a href="{{ route('messages.index', ['user_id' => $freelancer->id]) }}"
+                                       class="btn btn-success">
+                                       <i class="dwg-message mr-2"></i>Send Message
                                     </a>
                                 </div>
                                 <div class="row mb-4">
@@ -143,6 +147,23 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        @if($hasActiveProject)
+                                        <div class="mt-4">
+                                            <h5>Contact Information</h5>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p><strong>Email:</strong> {{ $freelancer->email }}</p>
+                                                    @if($freelancer->phone)
+                                                        <p><strong>Phone:</strong> {{ $freelancer->phone }}</p>
+                                                    @endif
+                                                    @if($freelancer->address)
+                                                        <p><strong>Address:</strong> {{ $freelancer->address }}</p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

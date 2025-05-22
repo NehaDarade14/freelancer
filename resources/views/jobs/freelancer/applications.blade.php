@@ -84,7 +84,7 @@
                                                         class="btn btn-sm btn-outline-primary">
                                                             View
                                                         </a>
-                                                        <a href="{{ route('message.index', $application) }}"
+                                                        <a href="{{ route('messages.index', ['user_id' =>$application->job->employer->id]) }}"
                                                                     class="btn btn-sm btn-outline-info">
                                                                         Message
                                                                     </a>
