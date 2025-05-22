@@ -47,7 +47,13 @@
                                     <thead>
                                         <tr>
                                             <th>Project</th>
-                                            <th>Client/Freelancer</th>
+                                            <th>
+                                            @if(auth()->user()->user_type === 'client')
+                                                Client
+                                            @else
+                                                Freelancer
+                                            @endif
+                                                </th>
                                             <th>Status</th>
                                             <th>Deadline</th>
                                             <th>Budget</th>

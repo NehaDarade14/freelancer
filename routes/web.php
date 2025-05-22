@@ -994,6 +994,8 @@ Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
     /* Project Tracking */
     Route::get('/projects/tracking', 'ProjectTrackingController@index')->name('projects.tracking');
     Route::get('/projects/tracking/{project}', 'ProjectTrackingController@show')->name('projects.tracking.show');
+    Route::post('/projects/tracking/{project}/progress', 'ProjectTrackingController@updateProgress')->name('projects.update-progress');
+    Route::post('/projects/tracking/{project}/status', 'ProjectTrackingController@updateStatus')->name('projects.update-status');
 
     /* Employer Job Management */
     Route::group(['middleware' => ['auth', 'is_client']], function() {

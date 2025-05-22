@@ -21,7 +21,9 @@ class Project extends Model
         'deadline',
         'client_id',
         'freelancer_id',
-        'status'
+        'status',
+        'progress',
+        'completed_at'
     ];
 
     public function client()

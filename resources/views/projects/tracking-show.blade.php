@@ -38,68 +38,127 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h6>Project Information</h6>
-                                    <p><strong>Status:</strong> 
-                                        <span class="badge badge-{{ $project->status == 'active' ? 'success' : ($project->status == 'completed' ? 'info' : 'warning') }}">
-                                            {{ ucfirst($project->status) }}
-                                        </span>
-                                    </p>
-                                    <p><strong>Budget:</strong> {{ config('payment.currency_symbol') }}{{ $project->budget }}</p>
-                                    <p><strong>Deadline:</strong> {{ \Carbon\Carbon::parse($project->deadline)->format('M d, Y') }}</p>
-                                    <p><strong>Created:</strong> {{ \Carbon\Carbon::parse($project->created_at)->format('M d, Y') }}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6>Client/Freelancer Details</h6>
-                                    @if(auth()->id() == $project->client_id)
-                                        <p><strong>Freelancer:</strong> {{ $project->freelancer->name }}</p>
-                                        <p><strong>Email:</strong> {{ $project->freelancer->email }}</p>
-                                    @else
-                                        <p><strong>Client:</strong> {{ $project->client->name }}</p>
-                                        <p><strong>Email:</strong> {{ $project->client->email }}</p>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <h6>Project Scope</h6>
-                                    <div class="card card-body bg-light">
-                                        {!! nl2br(e($project->scope)) !!}
+                        <div class="card-header">Project Details: {{ $project->title }}</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Project Information</h6>
+                                        <p><strong>Status:</strong> 
+                                            <span class="badge badge-{{ $project->status == 'active' ? 'success' : ($project->status == 'completed' ? 'info' : 'warning') }}">
+                                                {{ ucfirst($project->status) }}
+                                            </span>
+                                        </p>
+                                        <p><strong>Budget:</strong> {{ config('payment.currency_symbol') }}{{ $project->budget }}</p>
+                                        <p><strong>Deadline:</strong> {{ \Carbon\Carbon::parse($project->deadline)->format('M d, Y') }}</p>
+                                        <p><strong>Created:</strong> {{ \Carbon\Carbon::parse($project->created_at)->format('M d, Y') }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Client/Freelancer Details</h6>
+                                        @if(auth()->id() == $project->client_id)
+                                            <p><strong>Freelancer:</strong> {{ $project->freelancer->name }}</p>
+                                            <p><strong>Email:</strong> {{ $project->freelancer->email }}</p>
+                                        @else
+                                            <p><strong>Client:</strong> {{ $project->client->name }}</p>
+                                            <p><strong>Email:</strong> {{ $project->client->email }}</p>
+                                        @endif
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <h6>Deliverables</h6>
-                                    <div class="card card-body bg-light">
-                                        {!! nl2br(e($project->deliverables)) !!}
+                                <hr>
+
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <h6>Project Scope</h6>
+                                        <div class="card card-body bg-light">
+                                            {!! nl2br(e($project->scope)) !!}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            @if($project->requirements)
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <h6>Requirements</h6>
-                                    <div class="card card-body bg-light">
-                                        {!! nl2br(e($project->requirements)) !!}
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <h6>Deliverables</h6>
+                                        <div class="card card-body bg-light">
+                                            {!! nl2br(e($project->deliverables)) !!}
+                                        </div>
                                     </div>
                                 </div>
+
+                                @if($project->requirements)
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <h6>Requirements</h6>
+                                        <div class="card card-body bg-light">
+                                            {!! nl2br(e($project->requirements)) !!}
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                <!-- Progress Tracking -->
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <h6>Project Progress</h6>
+                                        <div class="progress mb-3" style="height: 25px;">
+                                            <div class="progress-bar progress-bar-striped bg-success"
+                                                role="progressbar"
+                                                style="width: {{ $project->progress }}%"
+                                                aria-valuenow="{{ $project->progress }}"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100">
+                                                {{ $project->progress }}%
+                                            </div>
+                                        </div>
+
+                                        @if(auth()->user()->user_type === 'client')
+                                        <form method="POST" action="{{ route('projects.update-progress', $project) }}">
+                                            @csrf
+                                            <div class="input-group">
+                                                <input type="number" name="progress"
+                                                    class="form-control"
+                                                    min="0" max="100"
+                                                    value="{{ $project->progress }}">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary" type="submit">
+                                                            Update Progress
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                        </form>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Status Management -->
+                                @if(auth()->user()->user_type === 'client')
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <h6>Update Status</h6>
+                                        <form method="POST" action="{{ route('projects.update-status', $project) }}">
+                                            @csrf
+                                            <div class="form-group" style="width:100%;display:inline-flex">
+                                                <select name="status" class="form-control">
+                                                    <option value="pending" {{ $project->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="active" {{ $project->status == 'active' ? 'selected' : '' }}>Active</option>
+                                                    <option value="completed" {{ $project->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary">
+                                                Update Status
+                                            </button>
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                                </div>
+                                @endif
+
+                                <div class="mt-3">
+                                    <a href="{{ route('projects.tracking') }}" class="btn btn-secondary">
+                                        Back to Projects
+                                    </a>
+                                </div>
                             </div>
-                            @endif
                         </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <a href="{{ route('projects.tracking') }}" class="btn btn-secondary">
-                            Back to Projects
-                        </a>
                     </div>
                 </div>
             </div>

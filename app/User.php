@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Fickrr\Models\Bid;
 use Fickrr\Models\JobApplication;
 use Fickrr\Models\UserType;
+use Fickrr\Models\Project;
 
 class User extends Authenticatable
 {
@@ -78,6 +79,12 @@ class User extends Authenticatable
     public function types()
     {
         return $this->hasMany(UserType::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'client_id')
+            ->orWhere('freelancer_id', $this->id);
     }
 	
 }
