@@ -516,6 +516,9 @@ Route::post('/profile-settings', ['as' => 'profile-settings','uses'=>'ProfileCon
 // Route::post('/profile/update', ['as' => 'profile.update','uses'=>'ProfileController@update_profile'])->middleware('auth');
 /* profile settings */
 Route::post('/freelancer-profile-settings', 'ProfileController@update_freelancer_profile')->name('freelancer-profile-settings');
+Route::get('/freelancers/search', 'FreelancerSearchController@searchat')->name('freelancers.searchat');
+Route::post('/freelancers/search', 'FreelancerSearchController@search')->name('freelancers.search');
+Route::get('/freelancers/{id}', 'FreelancerSearchController@show')->name('freelancer-profile');
 
 
 

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Fickrr\Models\Bid;
 use Fickrr\Models\JobApplication;
+use Fickrr\Models\UserType;
 
 class User extends Authenticatable
 {
@@ -72,6 +73,11 @@ class User extends Authenticatable
     public function jobs()
     {
         return $this->hasMany(\Fickrr\Models\Job::class, 'employer_id');
+    }
+
+    public function types()
+    {
+        return $this->hasMany(UserType::class);
     }
 	
 }
