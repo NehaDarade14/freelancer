@@ -5,6 +5,7 @@ namespace Fickrr\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Fickrr\User;
+use Carbon\Carbon;
 
 class Project extends Model
 {
@@ -34,5 +35,30 @@ class Project extends Model
     public function freelancer()
     {
         return $this->belongsTo(User::class, 'freelancer_id');
+    }
+
+    protected $casts = [
+        'deadline' => 'datetime',
+        'completed_at' => 'datetime'
+    ];
+
+    public function isOverdue()
+    {
+        return $this->deadline && $this->deadline->isPast() && $this->status !== 'completed';
+    }
+
+    public function daysUntilDeadline()
+    {
+        return $this->deadline ? Carbon::now()->diffInDays($this->deadline, false) : null;
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(\Fickrr\Models\Team::class);
+    }
+
+    public function milestones()
+    {
+        return $this->hasMany(Milestone::class);
     }
 }

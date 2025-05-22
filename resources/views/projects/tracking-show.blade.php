@@ -153,7 +153,7 @@
                                 @endif
 
                                 <div class="mt-3">
-                                    <a href="{{ route('projects.tracking') }}" class="btn btn-secondary">
+                                    <a href="{{ route('projects.dashboard') }}" class="btn btn-secondary">
                                         Back to Projects
                                     </a>
                                 </div>

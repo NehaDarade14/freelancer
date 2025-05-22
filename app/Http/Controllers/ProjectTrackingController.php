@@ -3,11 +3,65 @@
 namespace Fickrr\Http\Controllers;
 
 use Fickrr\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectTrackingController extends Controller
 {
+    public function dashboard()
+    {
+        $projects = auth()->user()->projects()
+            ->with(['client', 'freelancer', 'team'])
+            ->latest()
+            ->get();
+
+        $stats = [
+            'total' => $projects->count(),
+            'active' => $projects->where('status', 'active')->count(),
+            'completed' => $projects->where('status', 'completed')->count(),
+            'pending' => $projects->where('status', 'pending')->count(),
+            'overdue' => $projects->filter(fn($p) => $p->isOverdue())->count(),
+            'avg_progress' => round($projects->avg('progress'), 1)
+        ];
+
+        $upcomingDeadlines = $projects
+            ->filter(fn($p) => $p->status === 'active')
+            ->sortBy('deadline')
+            ->take(5);
+
+        return view('projects.dashboard', compact('projects', 'stats', 'upcomingDeadlines'));
+    }
+
+    public function kanban()
+    {
+        $projects = auth()->user()->projects()
+            ->with(['team', 'milestones'])
+            ->get()
+            ->groupBy('status');
+
+        return view('projects.kanban', compact('projects'));
+    }
+
+    public function gantt()
+    {
+        $projects = auth()->user()->projects()
+            ->with(['milestones'])
+            ->get()
+            ->map(function($project) {
+                return [
+                    'id' => $project->id,
+                    'name' => $project->title,
+                    'start' => $project->created_at->format('Y-m-d'),
+                    'end' => $project->deadline->format('Y-m-d'),
+                    'progress' => $project->progress / 100,
+                    'dependencies' => $project->milestones->pluck('id')->implode(','),
+                    'custom_class' => 'bg-' . ($project->isOverdue() ? 'danger' : 'success')
+                ];
+            });
+
+        return view('projects.gantt', compact('projects'));
+    }
+
     public function index()
     {
         $projects = Auth::user()->projects()
