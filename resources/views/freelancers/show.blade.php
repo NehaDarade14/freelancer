@@ -82,7 +82,7 @@
                                         <h5>Rating</h5>
                                         <div class="mb-3">
                                             @php
-                                                $rating = round($freelancer->rating, 1); // use the correct field
+                                                $rating = round($freelancer->ratings->avg('rating'), 1);
                                                 $fullStars = floor($rating);
                                                 $halfStar = ($rating - $fullStars) >= 0.5;
                                                 $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);

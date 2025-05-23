@@ -99,27 +99,27 @@
                                                     @endif
 
                                                     </p>
-                                                    @php
-                                                        $rating = round($freelancer->rating, 1); // use the correct field
-                                                        $fullStars = floor($rating);
-                                                        $halfStar = ($rating - $fullStars) >= 0.5;
-                                                        $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
-                                                        
-                                                    @endphp
+                                                      @php
+                                                $rating = round($freelancer->ratings->avg('rating'), 1);
+                                                $fullStars = floor($rating);
+                                                $halfStar = ($rating - $fullStars) >= 0.5;
+                                                $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                                
+                                            @endphp
 
-                                                    @for ($i = 0; $i < $fullStars; $i++)
-                                                        <i class="fa fa-star text-warning"></i>
-                                                    @endfor
+                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                <i class="fa fa-star text-warning"></i>
+                                            @endfor
 
-                                                    @if ($halfStar)
-                                                        <i class="fa fa-star-half text-warning"></i>
-                                                    @endif
+                                            @if ($halfStar)
+                                                <i class="fa fa-star-half text-warning"></i>
+                                            @endif
 
-                                                    @for ($i = 0; $i < $emptyStars; $i++)
-                                                        <i class="fa fa-star-o text-warning"></i>
-                                                    @endfor
+                                            @for ($i = 0; $i < $emptyStars; $i++)
+                                                <i class="fa fa-star-o text-warning"></i>
+                                            @endfor
 
-                                                    <span class="ml-2">({{ $rating }} stars)</span>
+                                            <span class="ml-2">({{ $rating }} stars)</span>
                                                     <p> Availability: {{ ucfirst(str_replace('_', ' ', $freelancer->available)); }}</p>
                                                 </div>
                                                 <div class="col-md-6 text-right">

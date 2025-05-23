@@ -5,7 +5,9 @@ namespace Fickrr\Http\Controllers;
 use Illuminate\Http\Request;
 use Fickrr\User;
 use Fickrr\Models\UserType;
-
+use Fickrr\Models\Project;
+use Auth;
+use Illuminate\Support\Facades\DB;
 class FreelancerSearchController extends Controller
 {
     public function search(Request $request)
@@ -27,9 +29,14 @@ class FreelancerSearchController extends Controller
         }
 
 
-        // Rating filter
-        if ($request->filled('rating')) {
-            $query->where('rating', '>=', $request->rating);
+       if ($request->filled('rating')) {
+            $query->whereHas('ratings', function ($q) {
+                $q->select(DB::raw('freelancer_id, AVG(rating) as avg_rating'))
+                ->groupBy('freelancer_id');
+            });
+
+            $query->withAvg('ratings', 'rating')
+                ->having('ratings_avg_rating', '>=', $request->rating);
         }
 
         // Availability filter
@@ -76,11 +83,25 @@ class FreelancerSearchController extends Controller
 
     public function show($id)
     {
-        $freelancer = User::whereHas('types', function($q) {
+         $freelancer = User::whereHas('types', function($q) {
                 $q->where('type', 'freelancer');
             })
             ->findOrFail($id);
 
-        return view('freelancers.show', compact('freelancer'));
+    
+            $hasActiveProject = false;
+        if ($freelancer) {
+            $hasActiveProject = Project::where(function($query) use ($id) {
+                $query->where('client_id', Auth::id())
+                      ->where('freelancer_id', $id)
+                      ->whereIn('status', ['active', 'in_progress']);
+            })->orWhere(function($query) use ($id) {
+                $query->where('client_id', $id)
+                      ->where('freelancer_id', Auth::id())
+                      ->whereIn('status', ['active', 'in_progress']);
+            })->exists();
+        }
+
+        return view('freelancers.show', compact('freelancer','hasActiveProject'));
     }
 }
