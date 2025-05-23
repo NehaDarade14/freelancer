@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\ProjectComplete;
 
 /* admin panel */
 
@@ -1025,4 +1027,11 @@ Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
         Route::get('/employer/jobs/{job}/applications/{application}', 'JobController@viewEmployerApplication')->name('employer.jobs.applications.view');
 		Route::post('/employer/jobs/{job}/applications/{application}/status', 'JobController@updateApplicationStatus')->name('employer.jobs.applications.status');
     });
+
+	Route::middleware(['auth'])->group(function () {
+		// Project rating route
+		Route::post('/projects/{project}/rate', 'RatingController@store')
+			
+			->name('projects.rate');
+	});
 });

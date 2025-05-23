@@ -31,14 +31,33 @@
             <a class="btn btn-outline-accent d-block" href="#account-menu" data-toggle="collapse"><i class="dwg-menu mr-2"></i>{{ __('Account menu') }}</a></div>
             @include('dashboard-menu')
         </aside>    
-        <!-- Content  -->
+        
+        
         <section class="col-lg-8">
 
             <!-- <div class="container"> -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Project Details: {{ $project->title }}</div>
+                        <!-- Content  -->
+                        @if($errors->any())
+                        <div class="alert alert-danger mb-4">
+                            @foreach($errors->all() as $error)
+                                <p class="mb-1">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                        @endif
+                        
+                        @if(session('success'))
+                        <div class="alert alert-success mb-4">
+                            {{ session('success') }}
+                        </div>
+                        @endif
+                                        <div class="card-header">Project Details: {{ $project->title }}</div>
+                        
+                            <input type="hidden" name="project_id" value="{{ $project->id }}">
+                            <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
+                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -110,7 +129,7 @@
                                             </div>
                                         </div>
 
-                                        @if(auth()->user()->user_type === 'client')
+                                         @if(auth()->user()->user_type === 'client')
                                         <form method="POST" action="{{ route('projects.update-progress', $project) }}">
                                             @csrf
                                             <div class="input-group">
@@ -124,6 +143,37 @@
                                                         </button>
                                                     </div>
                                                 </div>
+                                        </form>
+                                        @endif
+
+                                        @if(auth()->user()->user_type === 'client' && $project->status == 'completed')
+                                        <form method="POST" action="{{ route('projects.rate', $project) }}">
+                                            @csrf   
+                                            <div class="rating-section mt-4 p-3 border rounded bg-light">
+                                                <h5 class="mb-4"><i class="fa fa-star-half-alt"></i> Rate Freelancer Performance</h5>
+                                                <input type="hidden" name="project_id" value="{{ $project->id }}">
+                                                <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
+                                                <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                                                
+                                                <div class="rating-stars mb-4 text-center">
+                                                    @for($i = 5; $i >= 1; $i--)
+                                                        <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}"
+                                                               {{ old('rating') == $i ? 'checked' : '' }} required>
+                                                        <label class="star" for="star{{ $i }}"><i class="fa fa-star fa-2x"></i></label>
+                                                    @endfor
+                                                </div>
+                                                
+                                               
+                                                
+                                                <div class="mt-4 text-right">
+                                                    <button type="submit" class="btn btn-primary btn-lg">
+                                                        <i class="fa fa-paper-plane mr-2"></i> {{ session('success') ? 'Update Rating' : 'Submit Rating' }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            @error('rating')
+                                               <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
                                         </form>
                                         @endif
                                     </div>
@@ -150,6 +200,7 @@
                                         </form>
                                     </div>
                                 </div>
+                            </div>
                                 @endif
 
                                 <div class="mt-3">
@@ -165,7 +216,22 @@
         </section>
     </div>
 </div>
-
+<style>
+.rating-stars {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+}
+.rating-stars input { display: none; }
+.rating-stars label { 
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ddd;
+    padding: 0 5px;
+}
+.rating-stars input:checked ~ label { color: #ffd700; }
+.rating-stars label:hover,
+.rating-stars label:hover ~ label { color: #ffd700; }
+</style>
     @include('footer')
     @include('script')
     </body>

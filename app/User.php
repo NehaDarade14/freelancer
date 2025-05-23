@@ -9,6 +9,8 @@ use Fickrr\Models\Bid;
 use Fickrr\Models\JobApplication;
 use Fickrr\Models\UserType;
 use Fickrr\Models\Project;
+use Fickrr\Models\Rating;
+
 
 class User extends Authenticatable
 {
@@ -87,4 +89,13 @@ class User extends Authenticatable
             ->orWhere('freelancer_id', $this->id);
     }
 	
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'freelancer_id');
+    }
+
+    public function givenRatings()
+    {
+        return $this->hasMany(Rating::class, 'user_id');
+    }
 }
