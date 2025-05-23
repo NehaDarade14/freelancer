@@ -205,12 +205,22 @@
                     @endif
                     @if(in_array('kyc-submissions',$avilable))
                     <li>
-                        <a href="{{ url('/admin/kyc-submissions') }}"> <i class="menu-icon fa fa-hdd-o"></i>{{ __('KYC Submissions') }} </a>
+                        <a href="{{ url('/admin/kyc-submissions') }}"> <i class="menu-icon fa fa-file"></i>{{ __('KYC Submissions') }} </a>
                     </li>
                     @endif
                     @if(in_array('jobs',$avilable))
                     <li>
-                        <a href="{{ url('/admin/jobs') }}"> <i class="menu-icon fa fa-hdd-o"></i>{{ __('Job') }} </a>
+                        <a href="{{ url('/admin/jobs') }}"> <i class="menu-icon fa fa-briefcase"></i>{{ __('Job') }} </a>
+                    </li>
+                    @endif
+                    @if(in_array('faqs',$avilable))
+                    <li>
+                        <a href="{{ url('/admin/faqs') }}"> <i class="menu-icon fa fa-question-circle-o"></i>{{ __('FAQs') }} </a>
+                    </li>
+                    @endif
+                    @if(in_array('support-tickets',$avilable))
+                    <li>
+                        <a href="{{ url('/support-tickets') }}"> <i class="menu-icon fa fa-question-circle-o"></i>{{ __('Support Tickets') }} </a>
                     </li>
                     @endif
 
