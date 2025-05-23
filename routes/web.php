@@ -977,6 +977,10 @@ Route::group(['middleware' => ['auth', 'HtmlMinifier', 'cache', 'XSS']], functio
     Route::get('/all/notification', 'NotificationController@index')->name('notifications.index');
     Route::get('/all/notifications/mark-as-read', 'NotificationController@markAsRead')->name('notifications.markAsRead');
     Route::get('/notifications/unread-count', 'NotificationController@getUnreadCount')->name('notifications.unreadCount');
+    
+    // Notification settings
+    Route::post('/notification-settings', 'NotificationSettingsController@update')
+        ->name('notification.settings.update');
 });
 
 /* User-facing Job Routes */

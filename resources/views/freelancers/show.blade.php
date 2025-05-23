@@ -135,18 +135,72 @@
                                                     @if($freelancer->other)
                                                         <a href="{{$freelancer->other }}" target="_blank" class="btn btn-sm btn-outline-primary">Other View</a>
                                                     @endif
-                                            </div>
-                                        </div>
-                                        </div>
-                                        <h5>Professional Bio</h5>
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="mb-3">
-                                                        <p> {{$freelancer->professional_bio}} </p>
-                                                    </div>
                                                 </div>
                                             </div>
-                                             @if($hasActiveProject)
+                                        </div>
+                                        <h5>Notification Settings</h5>
+                                        <div class="mb-3">
+                                            <div class="card">
+                                                
+                                                <div class="card-body">
+                                                   <form method="POST" action="{{ route('notification.settings.update') }}">
+                                                        @csrf
+                                                        <div class="form-check mb-3">
+                                                            <input type="hidden" name="project_updates" value="0">
+                                                            <input class="form-check-input" type="checkbox" name="project_updates" id="project_updates" value="1"
+                                                                {{ $notificationSettings->project_updates ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="project_updates">
+                                                                Project Updates
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mb-3">
+                                                            <input type="hidden" name="messages" value="0">
+                                                            <input class="form-check-input" type="checkbox" name="messages" id="messages" value="1"
+                                                                {{ $notificationSettings->messages ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="messages">
+                                                                Messages
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mb-3">
+                                                            <input type="hidden" name="payments" value="0">
+                                                            <input class="form-check-input" type="checkbox" name="payments" id="payments" value="1"
+                                                                {{ $notificationSettings->payments ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="payments">
+                                                                Payment Notifications
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mb-3">
+                                                            <input type="hidden" name="new_jobs" value="0">
+                                                            <input class="form-check-input" type="checkbox" name="new_jobs" id="new_jobs" value="1"
+                                                                {{ $notificationSettings->new_jobs ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="new_jobs">
+                                                                New Jobs
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mb-3">
+                                                            <input type="hidden" name="application_updates" value="0">
+                                                            <input class="form-check-input" type="checkbox" name="application_updates" id="application_updates" value="1"
+                                                                {{ $notificationSettings->application_updates ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="application_updates">
+                                                                Application Update
+                                                            </label>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <h5>Professional Bio</h5>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <p> {{$freelancer->professional_bio}} </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if($hasActiveProject)
                                         <div class="mt-4">
                                             <h5>Contact Information</h5>
                                             <div class="card">

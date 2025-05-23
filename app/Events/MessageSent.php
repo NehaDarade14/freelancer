@@ -3,6 +3,7 @@
 namespace Fickrr\Events;
 
 use Fickrr\Models\Message;
+use Fickrr\Models\NotificationSetting;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -24,7 +25,13 @@ class MessageSent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.'.$this->message->receiver_id);
+        $receiverSettings = NotificationSetting::getSettings($this->message->receiver_id);
+        
+        if ($receiverSettings->messages) {
+            return new PrivateChannel('chat.'.$this->message->receiver_id);
+        }
+        
+        return [];
     }
 
     public function broadcastAs()

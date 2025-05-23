@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Fickrr\User;
 use Fickrr\Models\UserType;
 use Fickrr\Models\Project;
+use Fickrr\Models\NotificationSetting;
 use Auth;
 use Illuminate\Support\Facades\DB;
 class FreelancerSearchController extends Controller
@@ -107,6 +108,7 @@ class FreelancerSearchController extends Controller
             })->exists();
         }
 
-        return view('freelancers.show', compact('freelancer','hasActiveProject'));
+        $notificationSettings = NotificationSetting::getSettings(Auth::id());
+        return view('freelancers.show', compact('freelancer','hasActiveProject','notificationSettings'));
     }
 }
