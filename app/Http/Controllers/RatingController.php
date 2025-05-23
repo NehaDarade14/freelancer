@@ -29,10 +29,6 @@ class RatingController extends Controller
             abort(403, 'Project must be completed before rating');
         }
 
-        // Verify requesting user is the project client
-        // if ($project->client_id !== Auth::id()) {
-        //     abort(403, 'Unauthorized action');
-        // }
 
         // Check for existing rating
         if (Rating::where('user_id', Auth::id())
@@ -52,6 +48,6 @@ class RatingController extends Controller
 
         ]);
 
-        return back()->with('success', 'Thank you for rating this freelancer!');
+        return back()->with('success', 'Thank you for rating this user!');
     }
 }

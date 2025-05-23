@@ -4,6 +4,7 @@ namespace Fickrr\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Fickrr\User;
 
 class Rating extends Model
 {

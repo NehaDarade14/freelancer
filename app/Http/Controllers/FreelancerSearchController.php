@@ -89,13 +89,14 @@ class FreelancerSearchController extends Controller
 
     public function show($id)
     {
-         $freelancer = User::whereHas('types', function($q) {
+        $freelancer = User::with(['types', 'ratings'])
+            ->whereHas('types', function($q) {
                 $q->where('type', 'freelancer');
             })
             ->findOrFail($id);
 
-    
             $hasActiveProject = false;
+
         if ($freelancer) {
             $hasActiveProject = Project::where(function($query) use ($id) {
                 $query->where('client_id', Auth::id())
