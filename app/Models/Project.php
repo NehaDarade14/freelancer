@@ -5,6 +5,7 @@ namespace Fickrr\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Fickrr\User;
+use Fickrr\Models\Rating;
 use Carbon\Carbon;
 
 class Project extends Model
@@ -60,5 +61,11 @@ class Project extends Model
     public function milestones()
     {
         return $this->hasMany(\Fickrr\Models\Milestone::class);
+    }
+
+
+    public function ratings()
+    {
+        return $this->belongsTo(Rating::class, 'id', 'project_id');
     }
 }
