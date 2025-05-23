@@ -55,7 +55,7 @@ class FreelancerSearchController extends Controller
                 $q->where('type', 'freelancer');
             });
 
-        // Skills filter
+    
        // Skills filter (match ANY of the skills)
         if ($request->filled('skills')) {
             $skills = array_map('trim', explode(',', $request->skills));
@@ -67,9 +67,14 @@ class FreelancerSearchController extends Controller
         }
 
 
-        // Rating filter
-        if ($request->filled('rating')) {
-            $query->where('rating', '>=', $request->rating);
+       if ($request->filled('rating')) {
+            $query->whereHas('ratings', function ($q) {
+                $q->select(DB::raw('freelancer_id, AVG(rating) as avg_rating'))
+                ->groupBy('freelancer_id');
+            });
+
+            $query->withAvg('ratings', 'rating')
+                ->having('ratings_avg_rating', '>=', $request->rating);
         }
 
         // Availability filter

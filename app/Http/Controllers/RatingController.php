@@ -14,11 +14,9 @@ class RatingController extends Controller
         // $this->middleware(ProjectComplete::class);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Project $project)
     {
         $validated = $request->validate(Rating::rules());
-
-        $project = Project::findOrFail($validated['project_id']);
 
 
         if ($project->client_id !== Auth::id()) {
