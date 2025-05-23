@@ -142,7 +142,7 @@ class AppServiceProvider extends ServiceProvider
 					 Members::updateReferral(Auth::user()->id,$up_user_download);
 					
 				  }
-				  $stringmatch = "dashboard,settings,items,refund,rating,withdrawal,blog,ads,pages,features,subscription,selling,contact,newsletter,etemplate,ccache,upgrade,backups,deposit,currencies,reports,jobs,kyc-submissions,bid-packs,jobs";
+				  $stringmatch = "dashboard,settings,items,refund,rating,withdrawal,blog,ads,pages,features,subscription,selling,contact,newsletter,etemplate,ccache,upgrade,backups,deposit,currencies,reports,kyc-submissions,bid-packs,jobs,faqs,support-tickets";
 				  if(Auth::user()->id == 1)
 				  {
 				    if($user['avilable']->user_permission != $stringmatch)

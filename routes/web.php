@@ -465,9 +465,24 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 	Route::get('/admin/backup/delete/{file_name}', 'Admin\BackupController@delete');
 	Route::post('/admin/backup', ['as' => 'admin.backup','uses'=>'Admin\BackupController@backup']);
 
+	Route::get('support-tickets', 'Admin\SupportTicketController@index')->name('support-tickets.index');
+	Route::get('support-tickets/create', 'Admin\SupportTicketController@create')->name('support-tickets.create');
+	Route::post('support-tickets', 'Admin\SupportTicketController@store')->name('support-tickets.store');
+	Route::get('support-tickets/{support_ticket}', 'Admin\SupportTicketController@show')->name('support-tickets.show');
+	Route::get('support-tickets/{support_ticket}/edit', 'Admin\SupportTicketController@edit')->name('support-tickets.edit');
+	Route::put('support-tickets/{support_ticket}', 'Admin\SupportTicketController@update')->name('support-tickets.update');
+	Route::delete('support-tickets/{support_ticket}', 'Admin\SupportTicketController@destroy')->name('support-tickets.destroy');
 
 
+	Route::get('/admin/faqs', 'Admin\FAQController@index')->name('faqs.index');
+	Route::get('/admin/faqs/create', 'Admin\FAQController@create')->name('faqs.create');
+	Route::post('/admin/faqs', 'Admin\FAQController@store')->name('faqs.store');
+	Route::get('/admin/faqs/{faq}', 'Admin\FAQController@show')->name('faqs.show');
+	Route::get('/admin/faqs/{faq}/edit', 'Admin\FAQController@edit')->name('faqs.edit');
+	Route::put('/admin/faqs/{faq}', 'Admin\FAQController@update')->name('faqs.update');
+	Route::delete('/admin/faqs/{faq}', 'Admin\FAQController@destroy')->name('faqs.destroy');
 
+	
 });
 
 
