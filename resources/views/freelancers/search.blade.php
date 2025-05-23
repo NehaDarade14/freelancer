@@ -100,7 +100,7 @@
 
                                                     </p>
                                                       @php
-                                                $rating = round($freelancer->ratings->avg('rating'), 1);
+                                                $rating = round($freelancer->ratings->avg('work_rating'), 1);
                                                 $fullStars = floor($rating);
                                                 $halfStar = ($rating - $fullStars) >= 0.5;
                                                 $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);

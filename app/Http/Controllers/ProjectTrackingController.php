@@ -5,6 +5,7 @@ namespace Fickrr\Http\Controllers;
 use Fickrr\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Fickrr\Models\Rating;
 
 class ProjectTrackingController extends Controller
 {
@@ -75,8 +76,10 @@ class ProjectTrackingController extends Controller
     public function show(Project $project)
     {
         // $this->authorize('view', $project);
+        $review = Rating::where('project_id', $project->id)->first(); // returns object
 
-        return view('projects.tracking-show', compact('project'));
+        return view('projects.tracking-show',  compact('review','project'));
+      
     }
 
     public function updateProgress(Request $request, Project $project)

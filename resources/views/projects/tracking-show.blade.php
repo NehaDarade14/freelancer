@@ -4,6 +4,31 @@
 <title>{{ $allsettings->site_title }} - @if(Auth::user()->id != 1) Project Details: {{ $project->title }} @else {{ __('404 Not Found') }} @endif</title>
 @include('meta')
 @include('style')
+<style>
+.rating-stars {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    text-align: center;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.rating-stars label {
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ddd;
+    padding: 0 5px;
+}
+
+.rating-stars input:checked ~ label i,
+.rating-stars label:hover i,
+.rating-stars label:hover ~ label i {
+    color: #ffd700;
+}
+
+</style>
 </head>
 <body>
 @include('header')
@@ -53,7 +78,7 @@
                             {{ session('success') }}
                         </div>
                         @endif
-                                        <div class="card-header">Project Details: {{ $project->title }}</div>
+                            <div class="card-header">Project Details: {{ $project->title }}</div>
                         
                             <input type="hidden" name="project_id" value="{{ $project->id }}">
                             <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
@@ -146,35 +171,84 @@
                                         </form>
                                         @endif
 
-                                        @if(auth()->user()->user_type === 'client' && $project->status == 'completed')
+                                        @if($project->status == 'completed')
                                         <form method="POST" action="{{ route('projects.rate', $project) }}">
                                             @csrf   
                                             <div class="rating-section mt-4 p-3 border rounded bg-light">
-                                                <h5 class="mb-4"><i class="fa fa-star-half-alt"></i> Rate Freelancer Performance</h5>
+                                                <h5 class="mb-4"><i class="fa fa-star"></i> 
+                                                    
+                                                    @if(auth()->user()->user_type === 'client')
+                                                        Rate Freelancer Performance
+                                                    @else
+                                                        Rate Client
+                                                    @endif
+                                                </h5>
                                                 <input type="hidden" name="project_id" value="{{ $project->id }}">
                                                 <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
                                                 <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                                                
-                                                <div class="rating-stars mb-4 text-center">
-                                                    @for($i = 5; $i >= 1; $i--)
-                                                        <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}"
-                                                               {{ old('rating') == $i ? 'checked' : '' }} required>
-                                                        <label class="star" for="star{{ $i }}"><i class="fa fa-star fa-2x"></i></label>
-                                                    @endfor
+                                                @if(auth()->user()->user_type === 'client' && $project->status == 'completed')
+                                                    <!-- Work Quality -->
+                                                    <div class="mb-4">
+                                                        <h6>Work Quality</h6>
+                                                        <div class="rating-stars text-center">
+                                                            @for($i = 5; $i >= 1; $i--)
+                                                                <input type="radio"
+                                                                    id="work_star{{ $i }}"
+                                                                    name="work_rating"
+                                                                    value="{{ $i }}"
+                                                                    {{ (old('work_rating', $review->work_rating ?? '') == $i) ? 'checked' : '' }}
+                                                                    required>
+                                                                <label class="star" for="work_star{{ $i }}"><i class="fa fa-star fa-2x"></i></label>
+                                                            @endfor
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                <!-- Communication -->
+                                                <div class="mb-4">
+                                                    <h6>Communication</h6>
+                                                    <div class="rating-stars text-center">
+                                                        @for($i = 5; $i >= 1; $i--)
+                                                            <input type="radio"
+                                                                id="comm_star{{ $i }}"
+                                                                name="communication_rating"
+                                                                value="{{ $i }}"
+                                                                {{ (old('communication_rating', $review->communication_rating ?? '') == $i) ? 'checked' : '' }}
+                                                                required>
+                                                            <label class="star" for="comm_star{{ $i }}"><i class="fa fa-star fa-2x"></i></label>
+                                                        @endfor
+                                                    </div>
                                                 </div>
-                                                
-                                               
-                                                
-                                                <div class="mt-4 text-right">
+
+                                                <!-- Payment -->
+                                                <div class="mb-4">
+                                                    <h6>Payment Process</h6>
+                                                    <div class="rating-stars text-center">
+                                                        @for($i = 5; $i >= 1; $i--)
+                                                            <input type="radio"
+                                                                id="payment_star{{ $i }}"
+                                                                name="payment_rating"
+                                                                value="{{ $i }}"
+                                                                {{ (old('payment_rating', $review->payment_rating ?? '') == $i) ? 'checked' : '' }}
+                                                                required>
+                                                            <label class="star" for="payment_star{{ $i }}"><i class="fa fa-star fa-2x"></i></label>
+                                                        @endfor
+                                                    </div>
+                                                </div>
+
+                                                <!-- Review Text -->
+                                                <div class="form-group">
+                                                    <label>Review Comments</label>
+                                                    <textarea name="review_text" class="form-control" rows="3" maxlength="500">{{ old('review_text', $review->review_text ?? '') }}</textarea>
+                                                </div>
+
+                                                <div class="mt-4 ml-4 text-right">
                                                     <button type="submit" class="btn btn-primary btn-lg">
-                                                        <i class="fa fa-paper-plane mr-2"></i> {{ session('success') ? 'Update Rating' : 'Submit Rating' }}
+                                                        <i class="fa fa-paper-plane mr-2"></i> {{ $review ? 'Update Rating' : 'Submit Rating' }}
                                                     </button>
                                                 </div>
                                             </div>
-                                            @error('rating')
-                                               <div class="text-danger mt-2">{{ $message }}</div>
-                                            @enderror
                                         </form>
+
                                         @endif
                                     </div>
                                 </div>
@@ -200,7 +274,6 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
                                 @endif
 
                                 <div class="mt-3">
@@ -216,22 +289,7 @@
         </section>
     </div>
 </div>
-<style>
-.rating-stars {
-    direction: rtl;
-    unicode-bidi: bidi-override;
-}
-.rating-stars input { display: none; }
-.rating-stars label { 
-    cursor: pointer;
-    font-size: 2rem;
-    color: #ddd;
-    padding: 0 5px;
-}
-.rating-stars input:checked ~ label { color: #ffd700; }
-.rating-stars label:hover,
-.rating-stars label:hover ~ label { color: #ffd700; }
-</style>
+
     @include('footer')
     @include('script')
     </body>

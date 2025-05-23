@@ -13,8 +13,10 @@ class Rating extends Model
         'project_id',
         'freelancer_id',
         'user_id',
-        'rating',
-        'comment'
+        'work_rating',
+        'communication_rating',
+        'payment_rating',
+        'review_text'
     ];
 
     public static function rules()
@@ -23,8 +25,10 @@ class Rating extends Model
             'project_id' => 'required|exists:projects,id',
             'freelancer_id' => 'required|exists:users,id',
             'user_id' => 'required|exists:users,id',
-            'rating' => 'required|integer|between:1,5',
-            'comment' => 'nullable|string|max:500'
+            'work_rating' => 'required|integer|between:1,5',
+            'communication_rating' => 'required|integer|between:1,5',
+            'payment_rating' => 'required|integer|between:1,5',
+            'review_text' => 'nullable|string|max:500'
         ];
     }
 
