@@ -22,7 +22,7 @@ use URL;
 use Illuminate\Support\Facades\Config;
 use Cookie;
 use Illuminate\Support\Facades\Crypt;
-
+use Illuminate\Pagination\Paginator;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -65,6 +65,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 	
+		Paginator::useBootstrap(); 
+		
 	    Schema::defaultStringLength(191);
 		view()->composer('*', function ($view) {
         $view->with('current_locale', app()->getLocale());

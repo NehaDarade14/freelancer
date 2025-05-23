@@ -57,7 +57,8 @@ class SupportTicketController extends Controller
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
             'priority' => 'required|in:low,medium,high',
-            'status' => 'required|in:open,pending,resolved'
+            'status' => 'required|in:open,closed',
+            'admin_response' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
@@ -70,7 +71,8 @@ class SupportTicketController extends Controller
             'subject' => $request->subject,
             'message' => $request->message,
             'priority' => $request->priority,
-            'status' => $request->status
+            'status' => $request->status,
+            'admin_response' => $request->admin_response
         ]);
 
         return redirect()->route('support-tickets.index')

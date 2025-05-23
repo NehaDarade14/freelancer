@@ -91,12 +91,24 @@
                                         <div class="col-md-6">
                                             <select id="status" class="form-control @error('status') is-invalid @enderror" name="status" required>
                                                 <option value="open" {{ old('status', $supportTicket->status ?? '') == 'open' ? 'selected' : '' }}>Open</option>
-                                                <option value="pending" {{ old('status', $supportTicket->status ?? '') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="resolved" {{ old('status', $supportTicket->status ?? '') == 'resolved' ? 'selected' : '' }}>Resolved</option>
                                                 <option value="closed" {{ old('status', $supportTicket->status ?? '') == 'closed' ? 'selected' : '' }}>Closed</option>
                                             </select>
 
                                             @error('status')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="admin_response" class="col-md-4 col-form-label text-md-right">{{ __('Admin Response') }}</label>
+
+                                        <div class="col-md-6">
+                                            <textarea id="admin_response" class="form-control @error('admin_response') is-invalid @enderror" name="admin_response" rows="5">{{ old('admin_response', $supportTicket->admin_response ?? '') }}</textarea>
+
+                                            @error('admin_response')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>

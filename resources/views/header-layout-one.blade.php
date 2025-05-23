@@ -33,6 +33,8 @@
             <li class="nav-item"><a class="nav-link" href="{{ url('/pricing') }}">{{ __('Pricing') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/about') }}">{{ __('About') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/contact') }}">{{ __('Contact') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('faqs_index') }}">{{ __('FAQs') }}</a></li>
+           
           </ul>
         </div>
 

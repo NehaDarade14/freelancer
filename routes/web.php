@@ -489,6 +489,7 @@ Route::group(['middleware' => ['is_admin', 'HtmlMinifier', 'cache', 'XSS']], fun
 /* admin panel */
 
 Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
+   
     Route::get('/project-tracking', 'JobController@view_project_tracking')->name('project-tracking')->middleware('auth');
     Route::post('/project-tracking/{job}/{freelancerId}/update-status', 'JobController@update_project_status')
         ->name('project.update_status')
@@ -537,7 +538,14 @@ Route::get('/freelancers/search', 'FreelancerSearchController@searchat')->name('
 Route::post('/freelancers/search', 'FreelancerSearchController@search')->name('freelancers.search');
 Route::get('/freelancers/{id}', 'FreelancerSearchController@show')->name('freelancer-profile');
 
+ // FAQ Routes
+Route::get('/faqs', 'FAQController@index')->name('faqs_index');
 
+// Support Ticket Routes
+Route::get('/support-ticket', 'SupportTicketController@create')->name('support-ticket_create')->middleware("auth");
+Route::post('/support-ticket', 'SupportTicketController@store')->name('support-ticket_store')->middleware("auth");
+Route::get('/my-support-tickets', 'SupportTicketController@index')->name('support-ticket_index')->middleware("auth");
+	
 
 /* sitemap */
 Route::get('/sitemap.xml', 'SitemapController@index');

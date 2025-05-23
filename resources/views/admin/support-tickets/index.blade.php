@@ -65,6 +65,7 @@
                                             <th>Status</th>
                                             <th>Priority</th>
                                             <th>Created At</th>
+                                            <th>Admin Response</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -78,6 +79,7 @@
                                                 </td>
                                                 <td>{{ $ticket->priority }}</td>
                                                 <td>{{ $ticket->created_at->format('d/m/Y H:i') }}</td>
+                                                <td>{{ Str::limit($ticket->admin_response, 50) }}</td>
                                                 <td>
                                                     <a href="{{ route('support-tickets.edit', $ticket->id) }}" class="btn btn-sm btn-primary">
                                                         Edit
