@@ -131,20 +131,20 @@
                 <div class="form-group">
                   <label class="d-block"><strong>{{ __('User Type') }}</strong> <span class="required">*</span></label>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input user-type-checkbox" type="checkbox" name="user_type[]" id="customer" value="{{ $encrypter->encrypt('customer') }}" data-bvalidator="required" />
+                    <input class="form-check-input" type="checkbox" name="user_type[]" id="customer" value="{{ $encrypter->encrypt('customer') }}" data-bvalidator="required" />
                     <label class="form-check-label" for="customer">{{ __('Customer') }}</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input user-type-checkbox" type="checkbox" name="user_type[]" id="vendor" value="{{ $encrypter->encrypt('vendor') }}" />
+                    <input class="form-check-input" type="checkbox" name="user_type[]" id="vendor" value="{{ $encrypter->encrypt('vendor') }}" />
                     <label class="form-check-label" for="vendor">{{ __('Vendor') }}</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input user-type-checkbox" type="checkbox" name="user_type[]" id="freelancer" value="{{ $encrypter->encrypt('freelancer') }}" />
-                    <label class="form-check-label" for="freelancer">{{ __('Freelancer') }}</label>
+                    <input class="form-check-input" type="checkbox" name="user_type[]" id="freelancer" value="{{ $encrypter->encrypt('freelancer') }}" />
+                    <label class="form-check-label" for="freelancer">{{ __('I am  a freelancer') }}</label>
                   </div>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" name="user_type[]" id="client" value="{{ $encrypter->encrypt('client') }}" />
-                    <label class="form-check-label" for="client">{{ __('Client') }}</label>
+                    <label class="form-check-label" for="client">{{ __('I want to hire a freelancer') }}</label>
                   </div>
                 </div>
               </div>

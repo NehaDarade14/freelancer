@@ -1,32 +1,12 @@
-<div class="page-title-overlap pt-4" style="background-image: url('{{ url('/') }}/public/storage/settings/{{ $allsettings->site_banner }}');">
-    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
-        <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
-            <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-star">
-                <li class="breadcrumb-item"><a class="text-nowrap" href="{{ URL::to('/') }}"><i class="dwg-home"></i>{{ __('Home') }}</a></li>
-                <li class="breadcrumb-item text-nowrap active" aria-current="page">{{ __('Profile Settings') }}</li>
-            </ol>
-            </nav>
-        </div>
-        <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 mb-0 text-white">{{ __('Profile Settings') }}</h1>
-        </div>
-    </div>
-</div>
-<div class="container pb-5 mb-2 mb-md-3">
-    <div class="row">
-        <!-- Sidebar-->
-        <aside class="col-lg-4 pt-5 mt-3">
-            <div class="d-block d-lg-none p-4">
-            <a class="btn btn-outline-accent d-block" href="#account-menu" data-toggle="collapse"><i class="dwg-menu mr-2"></i>{{ __('Account menu') }}</a></div>
-            @include('dashboard-menu')
-        </aside>
-        <!-- Content  -->
-        <section class="col-lg-8">
+@extends('layouts.main')
+
+@section('content')
+ <div class="row">
+    <div class="col-md-12">
             <!-- Step Progress -->
             
             <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
-                <h6 class="font-size-base text-light mb-0">{{ __('Update you profile details below') }}</h6>
+                <h6 class="font-size-base mb-0">{{ __('Update you profile details below') }}</h6>
                 <a class="btn btn-primary btn-sm" href="{{ url('/logout') }}"><i class="dwg-sign-out mr-2"></i>{{ __('Logout') }}</a>
             </div>
             <div class="form-steps mb-4">
@@ -428,8 +408,7 @@
                     </div>
                 </div>
             </form>
-        </section>
-    </div>
+       </div>
 </div>
 
 
@@ -531,6 +510,8 @@
         cursor: crosshair;
     }
     </style>
+
+@include('script')
 <script>
 
   let currentStep = 1;
@@ -673,3 +654,4 @@
 
     
 </script>
+@endsection

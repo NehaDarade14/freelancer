@@ -64,7 +64,7 @@
                   </div>
                   <div class="custom-control custom-radio custom-control-inline">
                     <input class="custom-control-input" type="radio" name="user_type" id="freelancer" value="freelancer">
-                    <label class="custom-control-label" for="freelancer">{{ __('Freelancer') }}</label>
+                    <label class="custom-control-label" for="freelancer">{{ __('I am  a freelancer') }}</label>
                   </div>
                   <div class="custom-control custom-radio custom-control-inline">
                     <input class="custom-control-input" type="radio" name="user_type" id="vendor" value="vendor">
@@ -72,7 +72,7 @@
                   </div>
                   <div class="custom-control custom-radio custom-control-inline">
                     <input class="custom-control-input" type="radio" name="user_type" id="client" value="client">
-                    <label class="custom-control-label" for="client">{{ __('Client') }}</label>
+                    <label class="custom-control-label" for="client">{{ __('I want to hire a freelancer') }}</label>
                   </div>
                 </div>
                 <div class="d-flex flex-wrap justify-content-between">

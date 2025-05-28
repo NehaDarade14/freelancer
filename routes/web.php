@@ -1013,7 +1013,7 @@ Route::group(['middleware' => ['HtmlMinifier', 'cache', 'XSS']], function () {
     Route::post('/jobs/{job}/apply', 'JobController@submitApplication')->name('jobs.apply.submit')->middleware('auth');
     
     /* Freelancer Job Applications */
-    Route::get('/all/jobs', 'JobController@freelancerJobs')->name('freelancer.jobs')->middleware('auth');
+    Route::get('/all/jobs', 'JobController@freelancerJobs')->name('freelancer.jobs');
     
     /* Project Initiation with Freelancer */
     Route::get('/projects/create/{freelancer_id}', 'ProjectsController@create')
