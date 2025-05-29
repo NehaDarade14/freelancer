@@ -3,8 +3,9 @@
 
 @section('content')
 
-<!-- <div class="container"> -->
-    <div class="row">
+<section class="page-content pt-100 pb-100">
+    <div class="container-jobs">
+        <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -44,7 +45,7 @@
                     <div class="gap-2">
                         
                         <a href="{{ route('freelancer.jobs') }}" class="btn btn-secondary  btn-sm">Cancel</a>
-                        @if(auth()->user()->user_type === 'freelancer')
+                        @if(Auth::check() &&auth()->user()->user_type === 'freelancer')
                             @php
                                 $application = Auth::user()->applications()->where('job_id', $job->id)->first();
                             @endphp
@@ -66,4 +67,11 @@
             </div>
         </div>
     </div>
+</section>
+<style>
+    .container-jobs{
+        margin:50px;
+
+    }
+</style>
 @endsection

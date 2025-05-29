@@ -92,7 +92,7 @@ class JobController extends Controller
             $jobs = Job::latest()
             ->where("status","active")
             ->filter($request->only(['search', 'job_type', 'location', 'experience_level']))
-            ->paginate(10);
+            ->paginate(9);
 
             return view('jobs.freelancer.index', compact('jobs'));
         
